@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <meta name="Yiran Wu, Hannah Kim" content="">
+    <title>{{ page_title }}</title>
+    <link rel='stylesheet' href="{{url_for('static', filename = 'style.css')}}">
+   
+    <article id='content'>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div id="messages">
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% block head_stuff %} 
+{% endblock %}
+</head>
+
+<body>
+
+{% block main_content %}
+{% endblock %}
+</body>
+</html>

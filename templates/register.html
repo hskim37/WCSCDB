@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<h1>Register</h1>
+<form method=post action="">
+
+        <fieldset>
+        <table>
+        <tr><td><label for="username">Username:</label></td>
+            <td><input type="text" name="username" id="username"></td></tr>
+        <tr><td><label for="password">Password:</label></td>
+            <td><input type="text" name="password" id="password"></td></tr>
+             <tr><td><label for="password2"> Confirm Password:</label></td>
+            <td><input type="text" name="password2" id="password2"></td></tr>
+            
+        </table>
+        </fieldset>
+    <!-- Once submitted, bring user back to the home page with the new account info in the system  -->
+    <p> <input type='submit' value='login'></p>
+    
+    </form>
+{% endblock %}

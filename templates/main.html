@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+    {% block head_stuff %} 
+ <div id="navigation">
+            <ul>
+              <li><a href="{{ url_for('main') }}">Home</a>
+              <li><a href="{{ url_for('profileSetup') }}">Edit Your Profile</a>
+              <li><a href="{{ url_for('network') }}">Alumnae Network</a>
+              <li><a href="{{ url_for('tips') }}">Interview Advice</a>
+              <li><a href="{{ url_for('index') }}">Log Out</a>
+            </ul>
+          </div>
+{% endblock %}
+

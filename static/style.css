@@ -1,0 +1,31 @@
+/* For flashed messages; make them stand out using red and italics */
+
+#messages {
+    color: red;
+    font-style: italic;
+    font-size:30px;
+}
+
+h1 {
+    font-size: 200%;
+    color: teal;
+}
+h2{
+    font-size:150%;
+    color: orange;
+
+}
+.search{
+    text-align:center;
+    background-color: pink;
+    font-size:  18px;
+    /* border:2px solid coral; */
+}
+#content{
+    background-color:lightyellow;
+    font-size:20px;
+    padding: 30px;
+}
+html{
+    background-color:lightblue;
+}

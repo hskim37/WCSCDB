@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block head_stuff %} 
+<h1>Your Profile</h1>
+
+<form method=POST action="">
+    <fieldset>
+    <table>
+      <tr>
+        <td><label for="username">Username</label></td>
+        <td><input name='username' value={{username}}></td> 
+      </tr>
+      <tr>
+        <td><label for="year">Year</label></td>
+        <td><input name="year" value="{{gradYear}}"></td>
+      </tr>
+      <tr>
+        <td><label for="interest">Interest</label></td>
+        <td><input name='interest' value="{{interest}}"></td>
+      </tr>
+  
+    <p></p>
+      <tr>
+      <td><label for="descrip">Personal Description</label></td>
+        <td><textarea id="descrip" rows="4" cols="50">
+        {{description}}
+        </textarea></td>
+      </tr>
+    
+    </table>
+    <input type="submit" name="submit" value="update">
+    <input type="submit" name="submit" value="logout">
+  </fieldset>
+  </form>
+
+    {% endblock %}
+
+  

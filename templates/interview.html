@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block head_stuff %} 
+<!-- the search bar for interview tips -->
+<form class="search" method="GET" action="/query/">
+<fieldset>
+    <tr><td>
+    <label>search by
+            <select required="" name="kind">
+                <option value="">choose one</option>
+                <option value="author">Author Name</option>
+                <option value="keyword">Keywords</option>
+
+            </select>
+    </label>
+    </td></tr>
+    <tr><td>
+            <label for="keyword"> </label></td>
+            <td><input type="text" name="keyword" id="keyword">
+    </td></tr>
+      <tr><td>
+      <input type="submit" value="search">
+      </td></tr>
+      </fieldset>
+</form>
+{% endblock %}
+
+{% block main_content %}
+<h2>List of posts, not yet implemented</h2>
+{% if posts %}
+            <div id="posts">
+            {% for p in posts %}
+                <p>{{p}}</p>
+            {% endfor %}
+            </div>
+        {% endif %}
+{% endblock %}
