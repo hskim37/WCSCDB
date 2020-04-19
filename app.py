@@ -36,7 +36,7 @@ def main():
 @app.route("/network/")
 def network():
     return render_template("network.html") 
-    
+
 @app.route("/tips/")
 def tips():
     return render_template("interview.html")
