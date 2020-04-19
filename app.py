@@ -20,18 +20,23 @@ app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 @app.route('/')
 def index():
     return render_template('login.html')
+
 @app.route("/register/")
 def register():
     return render_template("register.html")
+
 @app.route("/profile/")
 def profileSetup():
     return render_template("profile.html")
+
 @app.route("/main/")
 def main(): 
     return render_template("main.html")
+
 @app.route("/network/")
 def network():
     return render_template("network.html") 
+    
 @app.route("/tips/")
 def tips():
     return render_template("interview.html")
