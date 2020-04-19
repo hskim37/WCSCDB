@@ -16,14 +16,45 @@
             </div>
         {% endif %}
     {% endwith %}
-
-    {% block head_stuff %} 
-{% endblock %}
 </head>
 
 <body>
+    <div id="wrap">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div id="messages">
+                {% for msg in messages %}
+                    <p>{{msg}}</p>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %} 
 
+    <table class="navibar">
+        <tr>
+            <th>
+                <a href="/">Home</a>
+            </th>
+            <th>
+                <a href="/profile">My Profile</a>
+            </th>
+            <th>
+                <a href="/network">Alumnae Network</a>
+            </th>
+            <th>
+                <a href="/tips">Interview Tips</a>
+            </th>
+            <th>
+                <a href="/">Logout</a>
+            </th>
+        </tr>
+    </table>
+    {% block head_stuff %} 
+    {% endblock %}
+
+    
 {% block main_content %}
 {% endblock %}
+</div>
 </body>
 </html>
