@@ -2,31 +2,49 @@
 {% block main_content %} 
 <h1>My Profile</h1>
 
-<form method=POST action="">
+<form method="POST" action="{{ url_for('profile') }}" id="profile">
     <fieldset>
     <table>
       <tr>
-        <td><label for="username">Username</label></td>
-        <td><input name='username' value={{username}}></td> 
+        <td><label for="userID">ID</label></td>
+        <td>{{result['userID']}}</td>
+      </tr>
+      <tr>
+        <td><label for="name">Year</label></td>
+        <td>{{result['name']}}</td>
       </tr>
       <tr>
         <td><label for="year">Year</label></td>
-        <td><input name="year" value="{{gradYear}}"></td>
+        <td>{{result['classYear']}}</td>
       </tr>
       <tr>
-        <td><label for="interest">Interest</label></td>
-        <td><input name='interest' value="{{interest}}"></td>
+        <td><label for="email">Email</label></td>
+        <td>{{result['email']}}</td>
       </tr>
-  
-    <p></p>
       <tr>
-      <td><label for="descrip">Personal Description</label></td>
-        <td><textarea id="descrip" rows="4" cols="50">{{description}}</textarea></td>
+        <td>Visibility</td>
+        <td><input type="radio" id="visible" name="visible" {{visible}}> Yes</td>
       </tr>
-    
+      <tr>
+        <td></td>
+        <td><input type="radio" id="invisible" name="invisible" {{invisible}}> No</td>
+      </tr>
+      <tr>
+        <td><label for="interests">Interests</label></td>
+        <td><textarea id="interests" name="interests" rows="3" cols="50" maxlength=100 form="profile">{{result['interests']}}</textarea></td>
+      </tr>
+      <tr>
+        <td><label for="introduction">Introduction</label></td>
+        <td><textarea id="introduction" name="introduction" rows="5" cols="50" maxlength=200 form="profile">{{result['introduction']}}</textarea></td>
+      </tr>
+      <tr>
+        <td><label for="career">Career Description</label></td>
+        <td><textarea id="career" name="career" rows="7" cols="50" maxlength=300 form="profile">{{result['career']}}</textarea></td>
+      </tr>
+      <tr>
+        <td><input type="submit" name="submit" value="Update"></td>
+      </tr>
     </table>
-    <input type="submit" name="submit" value="update">
-    <input type="submit" name="submit" value="logout">
   </fieldset>
   </form>
 
