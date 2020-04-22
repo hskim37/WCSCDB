@@ -3,29 +3,48 @@
 #messages {
     color: red;
     font-style: italic;
-    font-size:30px;
+    font-size:20px;
+}
+
+a {
+    color: orange;
+    text-decoration: none;
 }
 
 h1 {
     font-size: 200%;
     color: teal;
 }
-h2{
-    font-size:150%;
-    color: orange;
 
-}
-.search{
-    text-align:center;
+.search {
+    text-align: center;
     background-color: pink;
     font-size:  18px;
     /* border:2px solid coral; */
 }
-#content{
-    background-color:lightyellow;
-    font-size:20px;
-    padding: 30px;
+
+.navibar {
+    width: 75%;
+    margin-left:auto; 
+    margin-right:auto; 
 }
-html{
+
+#content {
+    background-color:lightyellow;
+    font-size: 20px;
+    padding: 30px;
+    width: 1000px; 
+    margin: 0 auto;
+}
+
+#title {
+    font-size: 50px;
+    text-align: center;
+    color: navy;
+    font-weight: bold;
+
+}
+
+html {
     background-color:lightblue;
 }

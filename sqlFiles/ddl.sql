@@ -7,7 +7,7 @@ drop table if exists user;
 
 CREATE TABLE user (
 	userID varchar(30) not null,
-	`password` varchar(15) not null,
+	hashed varchar(15) not null,
 	`name` varchar(30) not null,
 	classYear year not null,
 	email varchar(50),

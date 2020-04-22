@@ -5,7 +5,7 @@
 <form class="search" method="GET" action="/query/">
 <fieldset>
     <tr><td>
-    <label>search by
+    <label>Search by
             <select required="" name="kind">
                 <option value="">choose one</option>
                 <option value="name">Name</option>
@@ -28,7 +28,7 @@
 {% endblock %}
 
 {% block main_content %}
-<h2>List of profiles, not yet implemented</h2>
+<p>List of profiles, not yet implemented</p>
 {% if profiles %}
             <div id="profiles">
             {% for p in profiles %}

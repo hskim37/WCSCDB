@@ -10,11 +10,11 @@
         <td>{{result['userID']}}</td>
       </tr>
       <tr>
-        <td><label for="name">Year</label></td>
+        <td><label for="name">Name</label></td>
         <td>{{result['name']}}</td>
       </tr>
       <tr>
-        <td><label for="year">Year</label></td>
+        <td><label for="year">Class Year</label></td>
         <td>{{result['classYear']}}</td>
       </tr>
       <tr>
@@ -23,11 +23,11 @@
       </tr>
       <tr>
         <td>Visibility</td>
-        <td><input type="radio" id="visible" name="visible" {{visible}}> Yes</td>
+        <td><input type="radio" id="visibility" name="visibility" {{visible}} value="Y"> Yes</td>
       </tr>
       <tr>
         <td></td>
-        <td><input type="radio" id="invisible" name="invisible" {{invisible}}> No</td>
+        <td><input type="radio" id="visibility" name="visibility" {{invisible}} value="N"> No</td>
       </tr>
       <tr>
         <td><label for="interests">Interests</label></td>
@@ -38,7 +38,7 @@
         <td><textarea id="introduction" name="introduction" rows="5" cols="50" maxlength=200 form="profile">{{result['introduction']}}</textarea></td>
       </tr>
       <tr>
-        <td><label for="career">Career Description</label></td>
+        <td><label for="career">Career</br>Description</label></td>
         <td><textarea id="career" name="career" rows="7" cols="50" maxlength=300 form="profile">{{result['career']}}</textarea></td>
       </tr>
       <tr>

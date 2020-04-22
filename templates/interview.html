@@ -5,7 +5,7 @@
 <form class="search" method="GET" action="/query/">
 <fieldset>
     <tr><td>
-    <label>search by
+    <label>Search by
             <select required="" name="kind">
                 <option value="">choose one</option>
                 <option value="author">Author Name</option>
@@ -26,7 +26,7 @@
 {% endblock %}
 
 {% block main_content %}
-<h2>List of posts, not yet implemented</h2>
+<p>List of posts, not yet implemented</p>
 {% if posts %}
             <div id="posts">
             {% for p in posts %}

@@ -5,50 +5,43 @@
     <meta name="Yiran Wu, Hannah Kim" content="">
     <title>{{ page_title }}</title>
     <link rel='stylesheet' href="{{url_for('static', filename = 'style.css')}}">
-   
-    <article id='content'>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div id="messages">
-            {% for msg in messages %}
-                <p>{{msg}}</p>
-            {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
 </head>
 
 <body>
-    <div id="wrap">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div id="messages">
-                {% for msg in messages %}
-                    <p>{{msg}}</p>
-                {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %} 
+    <div id="content">
+
+        <div id="title">WCSCDB</div>
 
     <table class="navibar">
         <tr>
             <th>
-                <a href="/">Home</a>
+                <a href="/">HOME</a>
             </th>
             <th>
-                <a href="/profile/">My Profile</a>
+                <a href="/profile/">MY</br>PROFILE</a>
             </th>
             <th>
-                <a href="/network">Alumnae Network</a>
+                <a href="/network">ALUMNAE</br>NETWORK</a>
             </th>
             <th>
-                <a href="/tips">Interview Tips</a>
+                <a href="/tips">INTERVIEW</br>TIPS</a>
             </th>
             <th>
-                <a href="/">Logout</a>
+                <a href="/">LOGOUT</a>
             </th>
         </tr>
     </table>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div id="messages">
+        {% for msg in messages %}
+            <p>{{msg}}</p>
+        {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %} 
+
     {% block head_stuff %} 
     {% endblock %}
 

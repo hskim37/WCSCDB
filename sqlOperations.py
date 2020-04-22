@@ -26,6 +26,22 @@ def updateProfile(conn,userID,visibility,interests,introduction,career):
     ''', [visibility,interests,introduction,career,userID])
     conn.commit()
 
+def registerUser(conn,userID,hashed,name,year,email):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        INSERT INTO
+        user (userID,hashed,name,classYear,email) 
+        VALUES (%s,%s,%s,%s,%s)
+        ''', [userID,hashed,name,year,email])
+    conn.commit()
+
+def login(conn,userID):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        SELECT userID,hashed 
+        FROM user WHERE userID=%s
+        ''', [userID])
+    return curs.fetchone()
 
 if __name__ == '__main__':
     dbi.cache_cnf()

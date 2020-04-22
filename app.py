@@ -8,6 +8,7 @@ app = Flask(__name__)
 import random
 import cs304dbi as dbi
 import sqlOperations
+import bcrypt
 
 app.secret_key = 'your secret here'
 # replace that with a random key
@@ -37,33 +38,90 @@ app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 nameDB = 'wcscdb_db'
 # testUserID for /profile
 testUserID = "wwellesley15"
+# test values for /register
+testName = "Wendy Wellesley"
+testYear = 2022
+testEmail = "wwellesley15@wellesley.edu"
 
-@app.route('/')
+@app.route('/', methods=["GET","POST"])
 def index():
-    return render_template('main.html')
+    if request.method=="GET":
+        return render_template('main.html')
+    else:
+        if request.form.get('submit')=="Login":
+            try:
+                userID = request.form['userID']
+                password = request.form['password'] # the user's input as is
+                conn = dbi.connect()
+                userInfo = sqlOperations.login(conn,userID)
+                if userInfo is None:
+                    # Same response as wrong password,
+                    # so no information about what went wrong
+                    flash('Login information incorrect. Try again or register')
+                    return redirect( url_for('index'))
+                hashed = userInfo['hashed'] # hashed password stored in database
 
-@app.route("/register/")
+                # SOMETHING IS WRONG HERE. ASKED SCOTT ABOUT IT
+
+                a = password.encode('utf-8')
+                b = hashed.encode('utf-8')
+                print(a,b) # b'fdsaf' b'$2b$12$WyEfkwry'
+                print(bcrypt.hashpw(password.encode('utf-8'),bcrypt.gensalt())) # b'$2b$12$pCT5dcKR3vW.t8o3PVnt.Oa46yrLPEP3gqKpnZlL8ntPAZVID7ITq'
+                print(bcrypt.hashpw(bcrypt.gensalt(),hashed.encode('utf-8'))) # returns nothing
+                hashed2 = bcrypt.hashpw(password.encode('utf-8'),hashed.encode('utf-8'))
+                print(hashed2)
+                hashed2_str = hashed2.decode('utf-8')
+                print(password,a,hashed2_str)
+                if hashed2_str == hashed:
+                    flash('successfully logged in as '+userID)
+                    session['userID'] = userID
+                    session['logged_in'] = True
+                    return redirect(url_for('profile'))
+                else:
+                    flash('Login incorrect. Try again or register')
+                    return redirect(url_for('index'))
+            except Exception as err:
+                flash('form submission error '+str(err))
+                return redirect(url_for('index'))
+        else: # Register
+            return render_template('register.html')
+
+@app.route("/register/", methods=["POST"])
 def register():
-    return render_template("register.html")
+    try:
+        userID = request.form['userID']
+        password = request.form['password']
+        hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        hashed_str = hashed.decode('utf-8')
+        name = testName
+        year = testYear
+        email = testEmail
+        conn = dbi.connect()
+        curs = dbi.cursor(conn)
+        try:
+            sqlOperations.registerUser(conn,userID,hashed,testName,testYear,testEmail)
+        except Exception as err:
+            flash('User already registered: {}'.format(repr(err)))
+            return redirect(url_for('index'))
+        session['userID'] = userID
+        session['logged_in'] = True
+        return redirect(url_for('profile'))
+    except Exception as err:
+        flash('form submission error '+str(err))
+        return redirect(url_for('index'))
 
 @app.route("/profile/", methods=["GET","POST"])
 def profile():
     conn = dbi.connect()
 
     if request.method=="POST":
-        if request.form.get('visible')=="on":
-            visibility = 'Y'
-        else: # invisible
-            visibility = 'N'
-
+        visibility = request.form.get('visibility')
         interests = request.form.get('interests')
         if interests==None:
             interests = ""
-        
         introduction = request.form.get('introduction')
         if introduction==None:
             introduction = ""
-
         career = request.form.get('career')
         if career==None:
             career = ""
@@ -82,11 +140,6 @@ def profile():
             profileInfo[key] = ""
 
     return render_template('profile.html',result=profileInfo,visible=visibleY,invisible=visibleN)
-
-
-
-
-        # return render_template('main.html')
 
 @app.route("/network/")
 def network():

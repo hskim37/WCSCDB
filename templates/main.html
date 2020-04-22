@@ -1,27 +1,23 @@
 {% extends "base.html" %}
 
-    {% block head_stuff %} 
-<h1>Welcome to Wellesley Computer Science Career Database!</h1>
-<h2> - a Database of Career Development Resources for Wellesley CS Students and Alumni</h2>
-<p> Login to access alumni profiles, interview tips, and recruiter/referral information. </p>
+{% block head_stuff %} 
+<h1>Welcome to WCSCDB!</h1>
+<p> Welcome to WCSCDB, the Wellesley career development resource database for Computer Science students and alumni.
+</br>Log in to access alumni profiles, interview tips, and recruiter/referral information. </p>
 {% endblock %}
 
 {% block main_content %}
-<form method=post action="">
-
+<form method="POST" action="{{ url_for('index') }}">
         <fieldset>
         <legend>Login</legend>
         <table>
-        <tr><td><label for="username">Username:</label></td>
-            <td><input type="text" name="username" id="username"></td></tr>
-        <tr><td><label for="password">Password:</label></td>
+        <tr><td><label for="userID">ID</label></td>
+            <td><input type="text" name="userID" id="userID"></td></tr>
+        <tr><td><label for="password">Password</label></td>
             <td><input type="text" name="password" id="password"></td></tr>
-        <tr><td><a href="{{ url_for('register') }}">Create an Account</a></td></tr>  
-        <tr><td><input type='submit' value='login'></td></tr> 
+        <tr><td><input type='submit' name="submit" value='Login'>
+                <input type='submit' name="submit" value='Register'></td></tr>
         </table>
         </fieldset>
-    
-        
-    
     </form>
 {% endblock %}

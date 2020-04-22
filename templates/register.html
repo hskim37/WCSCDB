@@ -1,24 +1,26 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-<h1>Register</h1>
-<form method=POST action="">
+<h1> Register </h1>
+<p> Please enter your Wellesley ID and password. </p>
+<form method=POST action="{{ url_for('register') }}">
 
         <fieldset>
         <table>
         <tr>
-            <td><label for="username">Username:</label></td>
-            <td><input type="text" name="username" id="username"></td>
+            <td><label for="userID">ID</label></td>
+            <td><input type="text" name="userID" id="useRID"></td>
         </tr>
         <tr>
-            <td><label for="password">Password:</label></td>
-            <td><input type="text" name="password" id="password"></td>
+            <td><label for="password">Password</label></td>
+            <td><input type="password" name="password" id="password"></td>
         </tr>
-            
+        <tr>
+            <td><input type='submit' value='Register'></td>
+        </tr>
         </table>
         </fieldset>
     <!-- Once submitted, bring user back to the home page with the new account info in the system  -->
-    <p> <input type='submit' value='login'></p>
     
     </form>
 {% endblock %}
