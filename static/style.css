@@ -42,7 +42,12 @@ h1 {
     text-align: center;
     color: navy;
     font-weight: bold;
+}
 
+.network td,
+.network th,
+.network tr {
+    padding: 20px;
 }
 
 html {

@@ -31,8 +31,17 @@ def registerUser(conn,userID,hashed,name,year,email):
     curs.execute('''
         INSERT INTO
         user (userID,hashed,name,classYear,email) 
-        VALUES (%s,%s,%s,%s,%s)
+        VALUES (%s,%s,%s,%s,%s);
         ''', [userID,hashed,name,year,email])
+    conn.commit()
+    registerProfile(conn,userID)
+
+def registerProfile(conn,userID):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+    INSERT INTO `profile` 
+    (userID) VALUES (%s);
+    ''', [userID])
     conn.commit()
 
 def login(conn,userID):
@@ -42,6 +51,17 @@ def login(conn,userID):
         FROM user WHERE userID=%s
         ''', [userID])
     return curs.fetchone()
+
+def profileNetwork(conn):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        SELECT user.userID, user.name, user.classYear, 
+        user.email, profile.interests, profile.introduction, 
+        profile.career FROM profile
+        INNER JOIN user ON user.userID=profile.userID
+        WHERE profile.visibility='Y';
+        ''')
+    return curs.fetchall()
 
 if __name__ == '__main__':
     dbi.cache_cnf()

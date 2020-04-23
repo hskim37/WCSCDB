@@ -22,15 +22,7 @@
         <td>{{result['email']}}</td>
       </tr>
       <tr>
-        <td>Visibility</td>
-        <td><input type="radio" id="visibility" name="visibility" {{visible}} value="Y"> Yes</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td><input type="radio" id="visibility" name="visibility" {{invisible}} value="N"> No</td>
-      </tr>
-      <tr>
-        <td><label for="interests">Interests</label></td>
+        <td><label for="interests">Areas of</br>Interest</label></td>
         <td><textarea id="interests" name="interests" rows="3" cols="50" maxlength=100 form="profile">{{result['interests']}}</textarea></td>
       </tr>
       <tr>
@@ -40,6 +32,14 @@
       <tr>
         <td><label for="career">Career</br>Description</label></td>
         <td><textarea id="career" name="career" rows="7" cols="50" maxlength=300 form="profile">{{result['career']}}</textarea></td>
+      </tr>
+      <tr>
+        <td>Visibility</td>
+        <td><input type="radio" id="visibility" name="visibility" {{visible}} value="Y"> Yes</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input type="radio" id="visibility" name="visibility" {{invisible}} value="N"> No</td>
       </tr>
       <tr>
         <td><input type="submit" name="submit" value="Update"></td>

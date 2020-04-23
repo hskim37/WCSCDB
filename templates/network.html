@@ -7,11 +7,10 @@
     <tr><td>
     <label>Search by
             <select required="" name="kind">
-                <option value="">choose one</option>
+                <option value="">Select</option>
                 <option value="name">Name</option>
-                <option value="year">Class Year</option>
-                <option value="interest">Interests</option>
-
+                <option value="year">Year</option>
+                <option value="interest">Areas of Interest</option>
             </select>
     </label>
     </td></tr>
@@ -21,20 +20,26 @@
     </td></tr>
     </td>
       <tr><td>
-      <input type="submit" value="search">
+      <input type="submit" value="Search">
       </td></tr>
       </fieldset>
 </form>
 {% endblock %}
 
 {% block main_content %}
-<p>List of profiles, not yet implemented</p>
-{% if profiles %}
-            <div id="profiles">
-            {% for p in profiles %}
-                <p>{{p}}</p>
-            {% endfor %}
-            </div>
-        {% endif %}
+    <table class="network">
+        <tr>
+            <th>Name</th>
+            <th>Year</th>
+            <th>Areas of Interest</th>
+        </tr>
+        {% for profile in result %}
+        <tr>
+            <td>{{profile['name']}}</td>
+            <td align="center">{{profile['classYear']}}</td>
+            <td>{{profile['interests']}}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
 {% endblock %}
