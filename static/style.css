@@ -53,3 +53,7 @@ h1 {
 html {
     background-color:lightblue;
 }
+.alumnusProfile {
+    /* not working, will fix later */
+    background-color:#4CAF50; 
+}
