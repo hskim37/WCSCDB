@@ -157,20 +157,39 @@ def logout():
         flash('some kind of error '+str(err))
         return redirect(url_for('index'))
 
-@app.route("/network/")
+@app.route("/network/", methods=["GET","POST"])
 def network():
-    try:
-        if 'userID' in session:
-            conn = dbi.connect()
-            profileNetwork = sqlOperations.profileNetwork(conn)
-            print(profileNetwork)
-            return render_template("network.html", result=profileNetwork) 
-        else:
-            flash('You are not logged in. Please log in or register')
+    if request.method =='GET':
+        try:
+            if 'userID' in session:
+                conn = dbi.connect()
+                profileNetwork = sqlOperations.profileNetwork(conn)
+                print(profileNetwork)
+                return render_template("network.html", result=profileNetwork) 
+            else:
+                flash('You are not logged in. Please log in or register')
+                return redirect(url_for('index'))
+        except Exception as err:
+            flash('some kind of error '+str(err))
             return redirect(url_for('index'))
-    except Exception as err:
-        flash('some kind of error '+str(err))
-        return redirect(url_for('index'))
+    else: 
+        try:
+            conn = dbi.connect()
+            form_data = request.form
+            searchType = form_data['kind']
+            searchWord = form_data['keyword']
+            if searchType =='name':
+                profileNetwork = sqlOperations.searchProfileByName(conn,searchWord) 
+            elif searchType == "year":
+                profileNetwork = sqlOperations.searchProfileByYear(conn,searchWord)
+            elif searchType == 'interest':
+                profileNetwork = sqlOperations.searchProfileByInterest(conn,searchWord)
+            print("profileNetwork is",profileNetwork)   
+            return render_template("network.html", result=profileNetwork) 
+        except Exception as err:
+            flash('some kind of error '+str(err))
+            return redirect(url_for('network'))
+                    
 
 @app.route("/tips/")
 def tips():
@@ -183,6 +202,13 @@ def tips():
     except Exception as err:
         flash('some kind of error '+str(err))
         return redirect(url_for('index'))
+
+@app.route("/profile/<userID>")
+def alumnusPage(userID):
+    profileInfo = sqlOperations.profileInfo(conn,userID)    
+    print("profileInfo is", profileInfo)
+    return render_template("alumnus.html",result = profileInfo)
+
 
 if __name__ == '__main__':
     

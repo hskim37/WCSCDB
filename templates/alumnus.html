@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block main_content %} 
+<h1>{{result['name']}}</h1>
+
+    <table id="alumnusProfile">
+      <tr>
+        <td>Class year: {{result['classYear']}}</td>
+      </tr>
+      <tr>
+        <td>Email: {{result['email']}}</td>
+      </tr>
+      <tr>
+        <td>Areas of Interest: {{result['interests']}}</td>
+      </tr>
+      <tr>
+        <td>Introduction: {{result['introduction']}}</td>
+        
+      </tr>
+      <tr>
+        <td>Career Description: {{result['career']}}</td>
+      </tr>
+    </table>
+
+
+    {% endblock %}

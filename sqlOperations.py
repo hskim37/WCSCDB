@@ -63,6 +63,39 @@ def profileNetwork(conn):
         ''')
     return curs.fetchall()
 
+#three search functions for the network page search bar
+def searchProfileByName(conn,name):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        SELECT user.userID, user.name, user.classYear, 
+        user.email, profile.interests, profile.introduction, 
+        profile.career FROM profile
+        INNER JOIN user ON user.userID=profile.userID
+        WHERE profile.visibility='Y' and user.name like %s''',['%'+name+"%"]
+        )
+    return curs.fetchall()
+
+def searchProfileByYear(conn,year):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        SELECT user.userID, user.name, user.classYear, 
+        user.email, profile.interests, profile.introduction, 
+        profile.career FROM profile
+        INNER JOIN user ON user.userID=profile.userID
+        WHERE profile.visibility='Y' and user.classYear = %s''',[year]
+        )
+    return curs.fetchall()
+def searchProfileByInterest(conn,interest):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        SELECT user.userID, user.name, user.classYear, 
+        user.email, profile.interests, profile.introduction, 
+        profile.career FROM profile
+        INNER JOIN user ON user.userID=profile.userID
+        WHERE profile.visibility='Y' and profile.interests like %s''',['%'+interest+"%"]
+        )
+    return curs.fetchall()
+
 if __name__ == '__main__':
     dbi.cache_cnf()
     dbi.use(nameDB)

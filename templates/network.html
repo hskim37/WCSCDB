@@ -2,7 +2,7 @@
 
 {% block head_stuff %} 
 <!-- the search bar for profiles -->
-<form class="search" method="GET" action="/query/">
+<form class="search" method="POST" action="">
 <fieldset>
     <tr><td>
     <label>Search by
@@ -33,13 +33,25 @@
             <th>Year</th>
             <th>Areas of Interest</th>
         </tr>
+        {%if result%}
         {% for profile in result %}
         <tr>
             <td>{{profile['name']}}</td>
             <td align="center">{{profile['classYear']}}</td>
             <td>{{profile['interests']}}</td>
+            <!-- <td><form action="url_for('alumnusPage',userID = profile['userID'])}}" method="post">
+                <button name="MoreBtn" type="submit">More</button>
+                </form> -->
+            <td>
+                <a href="{{url_for('alumnusPage', userID = profile['userID'])}}">
+                        <button type="button">More Information</button></a>
+            </td>
+            
+            
         </tr>
         {% endfor %}
+        {% endif%}
+
     </table>
 
 {% endblock %}
