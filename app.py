@@ -195,6 +195,7 @@ def network():
 def tips():
     try:
         if 'userID' in session:
+            post = {"title"}
             return render_template('tips.html') 
         else:
             flash('You are not logged in. Please log in or register')
