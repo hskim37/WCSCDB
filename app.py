@@ -2,6 +2,7 @@ from flask import (Flask, render_template, make_response, url_for, request,
                    redirect, flash, session, send_from_directory, jsonify
                    )
 from werkzeug.utils import secure_filename
+from datetime import datetime
 import cs304dbi as dbi
 app = Flask(__name__)
 
@@ -184,25 +185,68 @@ def network():
                 profileNetwork = sqlOperations.searchProfileByYear(conn,searchWord)
             elif searchType == 'interest':
                 profileNetwork = sqlOperations.searchProfileByInterest(conn,searchWord)
-            print("profileNetwork is",profileNetwork)   
             return render_template("network.html", result=profileNetwork) 
         except Exception as err:
             flash('some kind of error '+str(err))
             return redirect(url_for('network'))
                     
 
-@app.route("/tips/")
+@app.route("/tips/",methods=["GET","POST"])
 def tips():
-    try:
-        if 'userID' in session:
-            post = {"title"}
-            return render_template('tips.html') 
+    if request.method == 'GET':
+        try:
+            if 'userID' in session:   
+                conn = dbi.connect() 
+                posts = sqlOperations.getAllPosts(conn)
+                return render_template('tips.html',posts=posts) 
+            else:
+                flash('You are not logged in. Please log in or register')
+                return redirect(url_for('index'))
+        except Exception as err:
+            flash('some kind of error '+str(err))
+            return redirect(url_for('index'))
+    elif request.method == 'POST':
+        if "userID" in session:
+            userID = session['userID']
+            form_data = request.form
+            conn = dbi.connect()
+            if form_data.get('kind')==None: #submit a post
+                print("here",form_data)
+                title = form_data["postTitle"]
+                content =form_data['article']
+                timeNow = datetime.now() 
+                authorID = userID
+                testPostID = random.randint(1, 100) #need to fix later
+                print(title,content,timeNow,authorID,testPostID)
+                try:
+                    sqlOperations.addPost(conn,authorID,content,title,testPostID,timeNow)
+                    posts = sqlOperations.getAllPosts(conn)
+                    #currently, once the user submit a post, they will not be able to edit it
+                    return redirect(url_for('tips',posts=posts))
+                    flash('Successfully submitted your post!')
+                except Exception as err:
+                    flash('Some kind of post submission error: {}'.format(repr(err)))
+                    posts = sqlOperations.getAllPosts(conn)
+                    return redirect(url_for('tips',posts=posts))
+
+            else:#search for posts
+                try:
+                    if form_data['kind'] =='author':
+                        authorName= form_data['searchWord']
+                        posts = sqlOperations.searchPostbyAuthor(conn,authorName)
+                        return render_template('tips.html',posts=posts)
+                    elif form_data['kind'] =='keyword':
+                        keyword = form_data['searchWord']
+                        posts = sqlOperations.searchPostbyKeyword(conn,keyword) 
+                        return render_template('tips.html',posts=posts)
+                except Exception as err:
+                    flash('Post submission error: {}'.format(repr(err)))
+                    posts = sqlOperations.getAllPosts(conn)
+                    return redirect(url_for('tips',posts=posts))      
         else:
             flash('You are not logged in. Please log in or register')
             return redirect(url_for('index'))
-    except Exception as err:
-        flash('some kind of error '+str(err))
-        return redirect(url_for('index'))
+
 
 @app.route("/profile/<userID>")
 def alumnusPage(userID):

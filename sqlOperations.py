@@ -96,6 +96,41 @@ def searchProfileByInterest(conn,interest):
         )
     return curs.fetchall()
 
+#add post
+def addPost(conn,authorID,content,title,postID,datetime):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        INSERT INTO post
+         (postID,authorID,datetime,title,content) 
+        VALUES (%s,%s,%s,%s,%s);
+        ''', [postID,authorID,datetime,title,content])
+    conn.commit()
+
+def getAllPosts(conn):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        SELECT user.name,`datetime`,content,title FROM post
+        INNER JOIN user ON user.userID=post.authorID;
+        ''')
+    return curs.fetchall()
+def searchPostbyAuthor(conn,authorName):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        SELECT user.name,`datetime`,content,title FROM post
+        INNER JOIN user ON user.userID=authorID WHERE user.name like %s;
+        ''',['%'+authorName+"%"])
+    return curs.fetchall()
+    #not yet implemented
+def searchPostbyKeyword(conn,keyword):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        SELECT user.name,`datetime`,content,title FROM post
+        INNER JOIN user ON user.userID=authorID WHERE post.content like %s or post.title like %s;
+        ''',['%'+keyword+"%",'%'+keyword+"%"])
+    return curs.fetchall()
+
+
+
 if __name__ == '__main__':
     dbi.cache_cnf()
     dbi.use(nameDB)

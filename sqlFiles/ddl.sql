@@ -1,7 +1,7 @@
 use wcscdb_db;
 -- drop table if exists professional;
 -- drop table if exists item;
--- drop table if exists post;
+drop table if exists post;
 drop table if exists `profile`;
 drop table if exists user;
 
@@ -29,18 +29,18 @@ CREATE TABLE `profile` (
 )
 ENGINE = InnoDB;
 
--- CREATE TABLE post (
--- 	postID char(12) not null,
--- 	authorID varchar(30) not null,
--- 	`datetime` datetime not null,
--- 	title varchar(30) not null,
--- 	content varchar(1000) not null,
--- 	primary key (postID),
--- 	foreign key (authorID) references user(userID)
--- 		on update restrict
--- 		on delete restrict
--- )
--- ENGINE = InnoDB;
+CREATE TABLE post (
+	postID char(12) not null,
+	authorID varchar(30) not null,
+	`datetime` datetime not null,
+	title varchar(30) not null,
+	content varchar(1000) not null,
+	primary key (postID),
+	foreign key (authorID) references user(userID)
+		on update restrict
+		on delete restrict
+)
+ENGINE = InnoDB;
 
 -- CREATE TABLE item (
 -- 	itemID char(12) not null,

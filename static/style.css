@@ -57,3 +57,16 @@ html {
     /* not working, will fix later */
     background-color:#4CAF50; 
 }
+#postTT{
+    background-color:blanchedalmond; 
+    padding:10px;
+    border
+
+}
+span{
+    text-align: center;
+    font-size: 25px;
+    color: cadetblue;
+    background-color:cornsilk;
+    font-weight: bold;
+}

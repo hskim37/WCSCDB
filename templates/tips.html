@@ -9,14 +9,14 @@
             <select required="" name="kind">
                 <option value="">choose one</option>
                 <option value="author">Author Name</option>
-                <option value="keyword">Keywords</option>
+                <option value="keyword">Keyword</option>
 
             </select>
     </label>
     </td></tr>
     <tr><td>
-            <label for="keyword"> </label></td>
-            <td><input type="text" name="keyword" id="keyword">
+            <label for="searchWord"> </label></td>
+            <td><input type="text" name="searchWord" id="searchWord">
     </td></tr>
       <tr><td>
       <input type="submit" value="search">
@@ -31,29 +31,31 @@
     <table>
         <tr>
            <td> <label for="postTitle">Title:</label> </td>
-           <td> <textarea id="postTitle" name="postTitle" rows="1" cols="50" maxlength=50 form="post">
-                </textarea> </td>
+           <td> <textarea id="postTitle" name="postTitle" rows="1" cols="50" maxlength=50 form="post"></textarea></td>
             </tr>
+
             <tr>
            <td><label for="article">Content:</label></td> 
-          <td><textarea id="article" name="article" rows="8" cols="50" maxlength=500 form="post">
-                </textarea>
-            </td>
+          <td><textarea id="article" name="article" rows="8" cols="50" maxlength=1000 form="post"></textarea> </td>
         </tr>
         <tr>
-            <td><input type="submit" name="submit" value="Submit"></td>
+            <td><input type="submit" value="submit" form='post'></td>
               </tr>
     </table>
 </fieldset>
 </form>
 {% endblock %}
 {% block main_content %}
-<p>List of posts, not yet implemented</p>
 {% if posts %}
-            <div id="posts">
             {% for p in posts %}
-                <p>{{p}}</p>
+                <div id='postTT'><span>{{p['title']}}</span>
+                </br><em>by {{p['name']}}, {{p['datetime']}}</em>
+                    <div>
+                        {{p['content']}}
+                    </div>
+                </div>
+              
             {% endfor %}
-            </div>
+
         {% endif %}
 {% endblock %}
