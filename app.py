@@ -22,15 +22,15 @@ from flask_cas import CAS
 from flask_cas import login_required
 from flask_cas import logout
 
-# CAS(app)
+CAS(app)
 
-# app.config['CAS_SERVER'] = 'https://login.wellesley.edu:443'
-# app.config['CAS_LOGIN_ROUTE'] = '/module.php/casserver/cas.php/login'
-# app.config['CAS_LOGOUT_ROUTE'] = '/module.php/casserver/cas.php/logout'
-# app.config['CAS_VALIDATE_ROUTE'] = '/module.php/casserver/serviceValidate.php'
-# app.config['CAS_AFTER_LOGIN'] = 'logged_in'
+app.config['CAS_SERVER'] = 'https://login.wellesley.edu:443'
+app.config['CAS_LOGIN_ROUTE'] = '/module.php/casserver/cas.php/login'
+app.config['CAS_LOGOUT_ROUTE'] = '/module.php/casserver/cas.php/logout'
+app.config['CAS_VALIDATE_ROUTE'] = '/module.php/casserver/serviceValidate.php'
+app.config['CAS_AFTER_LOGIN'] = 'logged_in'
 # the following doesn't work :-(
-# app.config['CAS_AFTER_LOGOUT'] = 'after_logout'
+app.config['CAS_AFTER_LOGOUT'] = 'after_logout'
 
 
 # This gets us better error messages for certain common request errors
@@ -42,6 +42,14 @@ testName = "Wendy Wellesley"
 testYear = 2022
 testEmail = "wwellesley15@wellesley.edu"
 
+@app.route('logged_in')
+def logged_in():
+    flash('successfully logged in')
+    return render_template('main.html')
+
+# @app.route()
+# def after_logout()
+
 @app.route('/', methods=["GET","POST"])
 def index():
     if request.method=="GET":
@@ -50,35 +58,33 @@ def index():
         else: # not logged in
             return render_template('login.html')
     else: # POST
-        if request.form.get('submit')=="Login":
-            try:
-                userID = request.form['userID']
-                password = request.form['password'] # the user's input as is
-                conn = dbi.connect()
-                userInfo = sqlOperations.login(conn,userID)
-                if userInfo is None:
-                    # Same response as wrong password,
-                    # so no information about what went wrong
-                    flash('Login information incorrect. Try again or register')
-                    return redirect(url_for('index'))
-                hashed = userInfo['hashed'] # hashed password stored in database
-                a = password.encode('utf-8')
-                b = hashed.encode('utf-8')
-                hashed2 = bcrypt.hashpw(password.encode('utf-8'),hashed.encode('utf-8'))
-                hashed2_str = hashed2.decode('utf-8')
-                if hashed2_str == hashed:
-                    flash('successfully logged in as '+userID)
-                    session['userID'] = userID
-                    session['logged_in'] = True
-                    return redirect(url_for('index'))
-                else:
-                    flash('Login incorrect. Try again or register')
-                    return redirect(url_for('index'))
-            except Exception as err:
-                flash('form submission error '+str(err))
+        # if request.form.get('submit')=="Login":
+        try:
+            userID = request.form['userID']
+            password = request.form['password'] # the user's input as is
+            conn = dbi.connect()
+            userInfo = sqlOperations.login(conn,userID)
+            if userInfo is None:
+                # Same response as wrong password,
+                # so no information about what went wrong
+                flash('Login information incorrect. Try again or register')
                 return redirect(url_for('index'))
-        else: # Register
-            return render_template('register.html')
+            hashed = userInfo['hashed'] # hashed password stored in database
+            a = password.encode('utf-8')
+            b = hashed.encode('utf-8')
+            hashed2 = bcrypt.hashpw(password.encode('utf-8'),hashed.encode('utf-8'))
+            hashed2_str = hashed2.decode('utf-8')
+            if hashed2_str == hashed:
+                flash('successfully logged in as '+userID)
+                session['userID'] = userID
+                session['logged_in'] = True
+                return redirect(url_for('index'))
+            else:
+                flash('Login incorrect. Try again or register')
+                return redirect(url_for('index'))
+        except Exception as err:
+            flash('form submission error '+str(err))
+            return redirect(url_for('index'))
 
 @app.route("/register/", methods=["POST"])
 def register():
@@ -262,6 +268,9 @@ if __name__ == '__main__':
         # arg, if any, is the desired port number
         port = int(sys.argv[1])
         assert(port>1024)
+        if not(1943 <= port <= 1950):
+            print('For CAS, choose a port from 1943 to 1950')
+            sys.exit()
     else:
         port = os.getuid()
         cnf = dbi.cache_cnf()   # defaults to ~/.my.cnf
