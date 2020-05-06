@@ -30,22 +30,39 @@ app.config['CAS_LOGOUT_ROUTE'] = '/module.php/casserver/cas.php/logout'
 app.config['CAS_VALIDATE_ROUTE'] = '/module.php/casserver/serviceValidate.php'
 app.config['CAS_AFTER_LOGIN'] = 'logged_in'
 # the following doesn't work :-(
-app.config['CAS_AFTER_LOGOUT'] = 'after_logout'
+# app.config['CAS_AFTER_LOGOUT'] = 'after_logout'
 
 
 # This gets us better error messages for certain common request errors
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 
 nameDB = 'wcscdb_db'
-# test values for /register
-testName = "Wendy Wellesley"
-testYear = 2022
-testEmail = "wwellesley15@wellesley.edu"
 
-@app.route('logged_in')
+@app.route('/logged_in/')
 def logged_in():
-    flash('successfully logged in')
-    return render_template('main.html')
+    flash('Wellesley credentials successfully verified')
+    if '_CAS_TOKEN' in session:
+        token = session['_CAS_TOKEN']
+    if 'CAS_ATTRIBUTES' in session:
+        attribs = session['CAS_ATTRIBUTES']
+        # print('CAS_attributes: ')
+        # for k in attribs:
+        #     print('\t',k,' => ',attribs[k])
+    if 'CAS_USERNAME' in session:
+        is_logged_in = True
+        username = session['CAS_USERNAME']
+        conn = dbi.connect()
+        print(sqlOperations.checkDuplicate(conn,username))
+        if sqlOperations.checkDuplicate(conn,username)!=None:
+            flash('You already have a registered account on WCSCDB.')
+            return redirect(url_for('index'))
+        # print(('CAS_USERNAME is: ',username))
+    else:
+        is_logged_in = False
+        username = None
+        print('CAS_USERNAME is not in the session')
+    return render_template('register.html',
+                           cas_attributes = session.get('CAS_ATTRIBUTES'))
 
 # @app.route()
 # def after_logout()
@@ -89,17 +106,21 @@ def index():
 @app.route("/register/", methods=["POST"])
 def register():
     try:
-        userID = request.form['userID']
         password = request.form['password']
+        confirmPassword = request.form['confirmPassword']
+        if password!=confirmPassword:
+            flash('Passwords do not match. Try again.')
+            return redirect(url_for('logged_in'))
+        name = request.form['name']
+        year = request.form['year']
+        email = request.form['email']
+        userID = request.form['userID']
         hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         hashed_str = hashed.decode('utf-8')
-        name = testName
-        year = testYear
-        email = testEmail
         conn = dbi.connect()
         curs = dbi.cursor(conn)
         try:
-            sqlOperations.registerUser(conn,userID,hashed,testName,testYear,testEmail)
+            sqlOperations.registerUser(conn,userID,hashed,name,year,email)
         except Exception as err:
             flash('User already registered: {}'.format(repr(err)))
             return redirect(url_for('index'))
@@ -149,8 +170,8 @@ def profile():
         flash('some kind of error '+str(err))
         return redirect(url_for('index'))
 
-@app.route('/logout/')
-def logout():
+@app.route('/log_out/')
+def log_out():
     try:
         if 'userID' in session:
             session.pop('userID')

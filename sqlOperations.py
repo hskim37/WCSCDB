@@ -52,6 +52,14 @@ def login(conn,userID):
         ''', [userID])
     return curs.fetchone()
 
+def checkDuplicate(conn,userID):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        SELECT userID
+        FROM user WHERE userID=%s
+        ''', [userID])
+    return curs.fetchone()
+
 def profileNetwork(conn):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -85,6 +93,7 @@ def searchProfileByYear(conn,year):
         WHERE profile.visibility='Y' and user.classYear = %s''',[year]
         )
     return curs.fetchall()
+
 def searchProfileByInterest(conn,interest):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -113,6 +122,7 @@ def getAllPosts(conn):
         INNER JOIN user ON user.userID=post.authorID;
         ''')
     return curs.fetchall()
+
 def searchPostbyAuthor(conn,authorName):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -120,6 +130,7 @@ def searchPostbyAuthor(conn,authorName):
         INNER JOIN user ON user.userID=authorID WHERE user.name like %s;
         ''',['%'+authorName+"%"])
     return curs.fetchall()
+
     #not yet implemented
 def searchPostbyKeyword(conn,keyword):
     curs = dbi.dict_cursor(conn)

@@ -2,18 +2,35 @@
 
 {% block main_content %}
 <h1> Register </h1>
-<p> Please enter your Wellesley ID and password. </p>
+
+Please enter your class year and the password you want to use on WCSCDB in the future.
 <form method=POST action="{{ url_for('register') }}">
 
         <fieldset>
         <table>
         <tr>
+            <td><label for="name">Name</label></td>
+            <td><input type="text" name="name" id="name" value="{{cas_attributes['cas:givenName']}} {{cas_attributes['cas:sn']}}" readonly></td>
+        </tr>
+        <tr>
+            <td><label for="year">Class Year</label></td>
+            <td><input type="number" name="year" id="year" min="1983" max="2050" required></td>
+        </tr>
+        <tr>
+            <td><label for="email">Email</label></td>
+            <td><input type="text" name="email" id="email" value="{{cas_attributes['cas:mail']}}" readonly></td>
+        </tr>
+        <tr>
             <td><label for="userID">ID</label></td>
-            <td><input type="text" name="userID" id="userID" minlength="3" required></td>
+            <td><input type="text" name="userID" id="userID" value="{{cas_attributes['cas:cn']}}" readonly></td>
         </tr>
         <tr>
             <td><label for="password">Password</label></td>
             <td><input type="password" name="password" id="password" minlength="1" required></td>
+        </tr>
+        <tr>
+            <td><label for="confirmPassword">Confirm Password</label></td>
+            <td><input type="password" name="confirmPassword" id="confirmPassword" minlength="1" required></td>
         </tr>
         <tr>
             <td><input type='submit' value='Register'></td>
