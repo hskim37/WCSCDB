@@ -3,9 +3,11 @@ from flask import (Flask, render_template, make_response, url_for, request,
                    )
 from werkzeug.utils import secure_filename
 from datetime import datetime
-from threading import Lock
 import cs304dbi as dbi
 app = Flask(__name__)
+
+from threading import Lock
+lock = Lock()
 
 import random
 import cs304dbi as dbi
@@ -75,8 +77,7 @@ def index():
             return render_template('main.html')
         else: # not logged in
             return render_template('login.html')
-    else: # POST
-        # if request.form.get('submit')=="Login":
+    else: # POST - Login form
         try:
             userID = request.form['userID']
             password = request.form['password'] # the user's input as is
@@ -122,11 +123,14 @@ def register():
         hashed_str = hashed.decode('utf-8')
         conn = dbi.connect()
         curs = dbi.cursor(conn)
+        lock.acquire()
         try:
             sqlOperations.registerUser(conn,userID,hashed,name,year,email)
         except Exception as err:
+            lock.release()
             flash('User already registered: {}'.format(repr(err)))
             return redirect(url_for('index'))
+        lock.release()
         flash('Successfully registered')
         return redirect(url_for('index'))
     except Exception as err:
@@ -263,7 +267,7 @@ def tips():
                     posts = sqlOperations.getAllPosts(conn)
                     return redirect(url_for('tips',posts=posts))
 
-            else:#search for posts
+            else: #search for posts
                 try:
                     if form_data['kind'] =='author':
                         authorName= form_data['searchWord']
