@@ -2,6 +2,7 @@ import cs304dbi as dbi
 
 nameDB = 'wcscdb_db'
 
+'''Returns profile information for user with specified userID.'''
 def profileInfo(conn,userID):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -12,6 +13,7 @@ def profileInfo(conn,userID):
         WHERE user.userID=%s;''', [userID])
     return curs.fetchone()
 
+'''Updates profile with specified userID and input information.'''
 def updateProfile(conn,userID,visibility,interests,introduction,career):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -26,6 +28,7 @@ def updateProfile(conn,userID,visibility,interests,introduction,career):
     ''', [visibility,interests,introduction,career,userID])
     conn.commit()
 
+'''Registers new user account and calls registerProfile.'''
 def registerUser(conn,userID,hashed,name,year,email):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -36,6 +39,7 @@ def registerUser(conn,userID,hashed,name,year,email):
     conn.commit()
     registerProfile(conn,userID)
 
+'''Registers profile for new user.'''
 def registerProfile(conn,userID):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -44,6 +48,8 @@ def registerProfile(conn,userID):
     ''', [userID])
     conn.commit()
 
+'''Returns login information for account 
+with the specified userID.'''
 def login(conn,userID):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -52,6 +58,8 @@ def login(conn,userID):
         ''', [userID])
     return curs.fetchone()
 
+'''Checks if there is a user with the same userID 
+when registering new account.'''
 def checkDuplicate(conn,userID):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -60,6 +68,8 @@ def checkDuplicate(conn,userID):
         ''', [userID])
     return curs.fetchone()
 
+'''Returns profile information of all users 
+who have set their profile to be visible.'''
 def profileNetwork(conn):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -72,6 +82,7 @@ def profileNetwork(conn):
     return curs.fetchall()
 
 #three search functions for the network page search bar
+'''Returns all profiles with names like the query.'''
 def searchProfileByName(conn,name):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -83,6 +94,7 @@ def searchProfileByName(conn,name):
         )
     return curs.fetchall()
 
+'''Returns all profiles with class year equal to the query.'''
 def searchProfileByYear(conn,year):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -94,6 +106,7 @@ def searchProfileByYear(conn,year):
         )
     return curs.fetchall()
 
+'''Returns all profiles with interests like the query.'''
 def searchProfileByInterest(conn,interest):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -106,6 +119,7 @@ def searchProfileByInterest(conn,interest):
     return curs.fetchall()
 
 #add post
+'''Adds post with input information.'''
 def addPost(conn,authorID,content,title,postID,datetime):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -115,6 +129,7 @@ def addPost(conn,authorID,content,title,postID,datetime):
         ''', [postID,authorID,datetime,title,content])
     conn.commit()
 
+'''Retrieves all posts.'''
 def getAllPosts(conn):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -123,6 +138,7 @@ def getAllPosts(conn):
         ''')
     return curs.fetchall()
 
+'''Searches all posts with author names like the query.'''
 def searchPostbyAuthor(conn,authorName):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -131,7 +147,8 @@ def searchPostbyAuthor(conn,authorName):
         ''',['%'+authorName+"%"])
     return curs.fetchall()
 
-    #not yet implemented
+#not yet implemented
+'''Searches all posts with keywords like the query.'''
 def searchPostbyKeyword(conn,keyword):
     curs = dbi.dict_cursor(conn)
     curs.execute('''

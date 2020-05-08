@@ -3,6 +3,7 @@ from flask import (Flask, render_template, make_response, url_for, request,
                    )
 from werkzeug.utils import secure_filename
 from datetime import datetime
+from threading import Lock
 import cs304dbi as dbi
 app = Flask(__name__)
 
@@ -38,6 +39,7 @@ app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 
 nameDB = 'wcscdb_db'
 
+'''Login route for CAS.'''
 @app.route('/logged_in/')
 def logged_in():
     flash('Wellesley credentials successfully verified')
@@ -64,9 +66,8 @@ def logged_in():
     return render_template('register.html',
                            cas_attributes = session.get('CAS_ATTRIBUTES'))
 
-# @app.route()
-# def after_logout()
-
+'''URL for main page. 
+User will see the login form only if they are not logged in.'''
 @app.route('/', methods=["GET","POST"])
 def index():
     if request.method=="GET":
@@ -103,6 +104,8 @@ def index():
             flash('form submission error '+str(err))
             return redirect(url_for('index'))
 
+'''URL for registering new account, 
+after users have been verified as a Wellesley student.'''
 @app.route("/register/", methods=["POST"])
 def register():
     try:
@@ -130,6 +133,7 @@ def register():
         flash('form submission error '+str(err))
         return redirect(url_for('index'))
 
+'''URL for viewing and editing user's personal profile.'''
 @app.route("/profile/", methods=["GET","POST"])
 def profile():
     try:
@@ -170,6 +174,8 @@ def profile():
         flash('some kind of error '+str(err))
         return redirect(url_for('index'))
 
+'''URL for logout.
+Logs out of WCSCDB account, not CAS.'''
 @app.route('/log_out/')
 def log_out():
     try:
@@ -185,6 +191,7 @@ def log_out():
         flash('some kind of error '+str(err))
         return redirect(url_for('index'))
 
+'''URL for network page.'''
 @app.route("/network/", methods=["GET","POST"])
 def network():
     if request.method =='GET':
@@ -217,7 +224,7 @@ def network():
             flash('some kind of error '+str(err))
             return redirect(url_for('network'))
                     
-
+'''URL for posts on tips.'''
 @app.route("/tips/",methods=["GET","POST"])
 def tips():
     if request.method == 'GET':
@@ -274,7 +281,7 @@ def tips():
             flash('You are not logged in. Please log in or register')
             return redirect(url_for('index'))
 
-
+'''URL for profiles on network, visible to other users.'''
 @app.route("/profile/<userID>")
 def alumnusPage(userID):
     profileInfo = sqlOperations.profileInfo(conn,userID)    
@@ -287,7 +294,9 @@ if __name__ == '__main__':
     import sys, os
     if len(sys.argv) > 1:
         # arg, if any, is the desired port number
+        print(sys.argv[1])
         port = int(sys.argv[1])
+        
         assert(port>1024)
         if not(1943 <= port <= 1950):
             print('For CAS, choose a port from 1943 to 1950')
