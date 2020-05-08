@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
     <meta charset='utf-8'>
-    <meta name="Yiran Wu, Hannah Kim" content="">
+    <meta name="author" content="Yiran Wu and Hannah Kim">
     <title>{{ page_title }}</title>
     
     <link rel='stylesheet' href="{{url_for('static', filename = 'style.css')}}">
@@ -17,19 +17,19 @@
     <table class="navibar">
         <tr>
             <th>
-                <a href="/">HOME</a>
+                <a href="{{ url_for('index') }}">HOME</a>
             </th>
             <th>
-                <a href="/profile/">MY</br>PROFILE</a>
+                <a href="{{ url_for('profile') }}">MY</br>PROFILE</a>
             </th>
             <th>
-                <a href="/network">ALUMNAE</br>NETWORK</a>
+                <a href="{{ url_for('network') }}">ALUMNAE</br>NETWORK</a>
             </th>
             <th>
-                <a href="/tips">INTERVIEW</br>TIPS</a>
+                <a href="{{ url_for('tips') }}">INTERVIEW</br>TIPS</a>
             </th>
             <th>
-                <a href="/log_out">LOGOUT</a>
+                <a href="{{ url_for('log_out') }}">LOGOUT</a>
             </th>
         </tr>
     </table>

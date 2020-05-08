@@ -22,7 +22,6 @@ app.secret_key = ''.join([ random.choice(('ABCDEFGHIJKLMNOPQRSTUVXYZ' +
                            for i in range(20) ])
 
 from flask_cas import CAS
-from flask_cas import login_required
 from flask_cas import logout
 
 CAS(app)
@@ -146,15 +145,9 @@ def profile():
             conn = dbi.connect()
             if request.method=="POST":
                 visibility = request.form.get('visibility')
-                interests = request.form.get('interests')
-                if interests==None:
-                    interests = ""
-                introduction = request.form.get('introduction')
-                if introduction==None:
-                    introduction = ""
-                career = request.form.get('career')
-                if career==None:
-                    career = ""
+                interests = request.form.get('interests', "")
+                introduction = request.form.get('introduction', "")
+                career = request.form.get('career', "")
                 sqlOperations.updateProfile(conn,userID,visibility,interests,introduction,career)
             # both POST and GET
             profileInfo = sqlOperations.profileInfo(conn,userID)
@@ -165,9 +158,7 @@ def profile():
                 visibleY = ""
                 visibleN = "checked"
             for key in profileInfo:
-                value = profileInfo[key]
-                if value==None:
-                    profileInfo[key] = ""
+                value = profileInfo.get(key, "")
 
             return render_template('profile.html',result=profileInfo,visible=visibleY,invisible=visibleN)
 

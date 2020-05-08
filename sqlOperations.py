@@ -1,7 +1,5 @@
 import cs304dbi as dbi
 
-nameDB = 'wcscdb_db'
-
 '''Returns profile information for user with specified userID.'''
 def profileInfo(conn,userID):
     curs = dbi.dict_cursor(conn)
@@ -161,5 +159,5 @@ def searchPostbyKeyword(conn,keyword):
 
 if __name__ == '__main__':
     dbi.cache_cnf()
-    dbi.use(nameDB)
+    dbi.use('wcscdb_db')
     conn = dbi.connect()
