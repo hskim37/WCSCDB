@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
-{% block head_stuff %}
+{% block title %}
+<title>WCSCDB::Edit Post</title>
 {% endblock %}
 {% block main_content %}
-<h1>Edit Your Post</h1>
+<h1>Edit Post</h1>
 
 <form method="POST" action="{{ url_for('tip', postID=result['postID']) }}" id='edit'>
 <fieldset>

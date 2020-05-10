@@ -148,6 +148,7 @@ def profile():
                 introduction = request.form.get('introduction', "")
                 career = request.form.get('career', "")
                 sqlOperations.updateProfile(conn,userID,visibility,interests,introduction,career)
+                flash("Suceessfully updated your profile.")
             # both POST and GET
             profileInfo = sqlOperations.profileInfo(conn,userID)
             if profileInfo['visibility']=='Y':
@@ -158,7 +159,6 @@ def profile():
                 visibleN = "checked"
             for key in profileInfo:
                 value = profileInfo.get(key, "")
-
             return render_template('profile.html',result=profileInfo,visible=visibleY,invisible=visibleN)
 
         else:
@@ -320,6 +320,7 @@ def tip(postID):
 '''URL for profiles on network, visible to other users.'''
 @app.route("/profile/<userID>")
 def alumnusPage(userID):
+    conn = dbi.connect()
     profileInfo = sqlOperations.profileInfo(conn,userID)
     return render_template("alumnus.html",result = profileInfo)
 

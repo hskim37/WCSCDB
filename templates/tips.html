@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}
+<title>WCSCDB::Posts</title>
+{% endblock %}
+
 {% block head_stuff %} 
 <!-- the search bar for interview tips -->
 <form class="search" method="POST" action="{{ url_for('tips') }}">
