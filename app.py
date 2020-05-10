@@ -245,15 +245,16 @@ def tips():
                 content =form_data['article']
                 timeNow = datetime.now() 
                 authorID = userID
-                testPostID = random.randint(1, 100) #need to fix later
-                print(title,content,timeNow,authorID,testPostID)
+                lock.acquire()
                 try:
-                    sqlOperations.addPost(conn,authorID,content,title,testPostID,timeNow)
+                    sqlOperations.addPost(conn,authorID,content,title,timeNow)
+                    lock.release()
                     posts = sqlOperations.getAllPosts(conn)
-                    #currently, once the user submit a post, they will not be able to edit it
+                    # currently, once the user submit a post, they will not be able to edit it
                     return redirect(url_for('tips',posts=posts))
                     flash('Successfully submitted your post!')
                 except Exception as err:
+                    lock.release()
                     flash('Some kind of post submission error: {}'.format(repr(err)))
                     posts = sqlOperations.getAllPosts(conn)
                     return redirect(url_for('tips',posts=posts))

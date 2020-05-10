@@ -118,13 +118,13 @@ def searchProfileByInterest(conn,interest):
 
 #add post
 '''Adds post with input information.'''
-def addPost(conn,authorID,content,title,postID,datetime):
+def addPost(conn,authorID,content,title,datetime):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         INSERT INTO post
-         (postID,authorID,datetime,title,content) 
-        VALUES (%s,%s,%s,%s,%s);
-        ''', [postID,authorID,datetime,title,content])
+         (authorID,datetime,title,content) 
+        VALUES (%s,%s,%s,%s);
+        ''', [authorID,datetime,title,content])
     conn.commit()
 
 '''Retrieves all posts.'''

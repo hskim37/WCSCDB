@@ -30,7 +30,7 @@ CREATE TABLE `profile` (
 ENGINE = InnoDB;
 
 CREATE TABLE post (
-	postID char(12) not null,
+	postID int(12) zerofill auto_increment not null,
 	authorID varchar(30) not null,
 	`datetime` datetime not null,
 	title varchar(30) not null,
