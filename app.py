@@ -320,8 +320,6 @@ def tip(postID):
                     flash('Error: {}'.format(repr(error)))
                 postInfo = sqlOperations.postInfo(conn,postID)
                 return render_template('tip.html',result=postInfo)
-
-
     else:
         flash('You are not logged in. Please log in or register')
         return redirect(url_for('index'))
