@@ -2,7 +2,7 @@
 
 {% block head_stuff %} 
 <!-- the search bar for interview tips -->
-<form class="search" method="POST" action="">
+<form class="search" method="POST" action="{{ url_for('tips') }}">
 <fieldset>
     <tr><td>
     <label>Search by
@@ -27,16 +27,17 @@
 <a href="{{ url_for('write') }}" class="writePost"> Write a Post </a>
 <p></p>
 {% endblock %}
+
 {% block main_content %}
     {% if posts %}
             {% for p in posts %}
-                <div id='postTT'><span>{{p['title']}}</span>
+            <div id='postTT'>
+                <a href="{{ url_for('tip', postID=p['postID']) }}" class='postTT'>{{p['title']}}</a>
                 </br><em>by {{p['name']}}, {{p['datetime']}}</em>
                     <div>
                         {{p['content']}}
                     </div>
-                </div>
-              
+            </div>
             {% endfor %}
     {% endif %}
 {% endblock %}

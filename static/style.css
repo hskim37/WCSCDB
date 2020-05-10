@@ -16,6 +16,10 @@ h1 {
     color: teal;
 }
 
+h2 {
+    color: cadetblue;
+}
+
 .search {
     text-align: center;
     background-color: pink;
@@ -66,9 +70,9 @@ html {
 #postTT{
     background-color:blanchedalmond; 
     padding:10px;
-
 }
-span{
+
+.postTT {
     text-align: center;
     font-size: 25px;
     color: cadetblue;

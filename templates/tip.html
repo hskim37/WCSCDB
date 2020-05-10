@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block main_content %} 
+
+<h2>{{result['title']}}</h2>
+<p>Author: {{result['authorID']}}</p>
+<p>Posted: {{result['datetime']}}</p>
+<fieldset>
+    {{result['content']}}
+</fieldset>
+{% endblock %}

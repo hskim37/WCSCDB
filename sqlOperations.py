@@ -11,6 +11,15 @@ def profileInfo(conn,userID):
         WHERE user.userID=%s;''', [userID])
     return curs.fetchone()
 
+'''Returns post information with specified postID.'''
+# fix this
+def postInfo(conn,postID):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        SELECT * FROM post
+        WHERE postID=%s;''', [postID])
+    return curs.fetchone()
+
 '''Updates profile with specified userID and input information.'''
 def updateProfile(conn,userID,visibility,interests,introduction,career):
     curs = dbi.dict_cursor(conn)
@@ -131,7 +140,7 @@ def addPost(conn,authorID,content,title,datetime):
 def getAllPosts(conn):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
-        SELECT user.name,`datetime`,content,title FROM post
+        SELECT user.name,`datetime`,content,title,postID FROM post
         INNER JOIN user ON user.userID=post.authorID;
         ''')
     return curs.fetchall()

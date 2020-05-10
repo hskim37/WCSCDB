@@ -219,7 +219,7 @@ def network():
             flash('some kind of error '+str(err))
             return redirect(url_for('network'))
                     
-'''URL for posts on tips.'''
+'''URL for viewing posts on tips.'''
 @app.route("/tips/",methods=["GET","POST"])
 def tips():
     if 'userID' in session:
@@ -251,7 +251,7 @@ def tips():
         flash('You are not logged in. Please log in or register')
         return redirect(url_for('index'))
 
-'''URL for writing tip posts.'''
+'''URL for writing posts on tips.'''
 @app.route("/write/",methods=["GET","POST"])
 def write():
     if 'userID' in session:
@@ -282,11 +282,28 @@ def write():
         flash('You are not logged in. Please log in or register')
         return redirect(url_for('index'))
 
+'''URL for viewing individual post on tips.'''
+@app.route("/tip/<postID>")
+def tip(postID):
+    print(postID)
+    if 'userID' in session:
+        try:
+            conn = dbi.connect()
+            postInfo = sqlOperations.postInfo(conn,postID)
+            return render_template("tip.html",result = postInfo)
+        except Exception as error:
+            flash('Error: {}'.format(repr(error)))
+            posts = sqlOperations.getAllPosts(conn)
+            return redirect(url_for('tips',posts=posts))  
+    else:
+        flash('You are not logged in. Please log in or register')
+        return redirect(url_for('index'))
+
+
 '''URL for profiles on network, visible to other users.'''
 @app.route("/profile/<userID>")
 def alumnusPage(userID):
-    profileInfo = sqlOperations.profileInfo(conn,userID)    
-    print("profileInfo is", profileInfo)
+    profileInfo = sqlOperations.profileInfo(conn,userID)
     return render_template("alumnus.html",result = profileInfo)
 
 if __name__ == '__main__':
