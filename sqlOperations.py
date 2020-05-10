@@ -140,7 +140,8 @@ def addPost(conn,authorID,content,title,datetime):
 def getAllPosts(conn):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
-        SELECT user.name,`datetime`,content,title,postID FROM post
+        SELECT user.name,`datetime`,content,title,
+        LPAD(postID, 12, '0') as postID FROM post
         INNER JOIN user ON user.userID=post.authorID;
         ''')
     return curs.fetchall()
