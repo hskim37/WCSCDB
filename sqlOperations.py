@@ -16,7 +16,9 @@ def profileInfo(conn,userID):
 def postInfo(conn,postID):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
-        SELECT * FROM post
+        SELECT user.name,`datetime`,content,title,
+        LPAD(postID, 12, '0') as postID, post.authorID FROM post
+        INNER JOIN user ON user.userID=post.authorID
         WHERE postID=%s;''', [postID])
     return curs.fetchone()
 
@@ -165,7 +167,13 @@ def searchPostbyKeyword(conn,keyword):
         ''',['%'+keyword+"%",'%'+keyword+"%"])
     return curs.fetchall()
 
-
+'''Deletes post with specified postID.'''
+def deletePost(conn,postID):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        DELETE from post WHERE postID=%s
+    ''',[postID])
+    conn.commit()
 
 if __name__ == '__main__':
     dbi.cache_cnf()

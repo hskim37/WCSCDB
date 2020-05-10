@@ -194,7 +194,6 @@ def network():
             if 'userID' in session:
                 conn = dbi.connect()
                 profileNetwork = sqlOperations.profileNetwork(conn)
-                print(profileNetwork)
                 return render_template("network.html", result=profileNetwork) 
             else:
                 flash('You are not logged in. Please log in or register')
@@ -283,18 +282,35 @@ def write():
         return redirect(url_for('index'))
 
 '''URL for viewing individual post on tips.'''
-@app.route("/tip/<postID>")
+@app.route("/tip/<postID>", methods=['GET','POST'])
 def tip(postID):
-    print(postID)
     if 'userID' in session:
-        try:
-            conn = dbi.connect()
-            postInfo = sqlOperations.postInfo(conn,postID)
-            return render_template("tip.html",result = postInfo)
-        except Exception as error:
-            flash('Error: {}'.format(repr(error)))
-            posts = sqlOperations.getAllPosts(conn)
-            return redirect(url_for('tips',posts=posts))  
+        if request.method=='GET':
+            try:
+                conn = dbi.connect()
+                postInfo = sqlOperations.postInfo(conn,postID)
+                return render_template("tip.html",result = postInfo)
+            except Exception as error:
+                flash('Error: {}'.format(repr(error)))
+                posts = sqlOperations.getAllPosts(conn)
+                return redirect(url_for('tips',posts=posts))  
+        else: # POST
+            form_data = request.form
+            if form_data.get('submit')=="Delete":
+                try:
+                    conn = dbi.connect()
+                    sqlOperations.deletePost(conn,postID)
+                    flash('Your post was successfully deleted.')
+                except Exception as error:
+                    flash('Error: {}'.format(repr(error)))
+                posts = sqlOperations.getAllPosts(conn)
+                return redirect(url_for('tips',posts=posts)) 
+
+
+            # else: # Edit
+
+
+
     else:
         flash('You are not logged in. Please log in or register')
         return redirect(url_for('index'))

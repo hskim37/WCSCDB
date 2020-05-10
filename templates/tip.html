@@ -7,4 +7,11 @@
 <fieldset>
     {{result['content']}}
 </fieldset>
+{% if session['userID']==result['authorID'] %}
+<form method="POST" action="{{ url_for('tip',postID=result['postID']) }}">
+    <input type="submit" name="submit" value="Edit">
+    <input type="submit" name="submit" value="Delete">
+</form>
+{% endif %}
+
 {% endblock %}
