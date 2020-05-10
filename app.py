@@ -55,7 +55,6 @@ def logged_in():
         is_logged_in = True
         username = session['CAS_USERNAME']
         conn = dbi.connect()
-        print(sqlOperations.checkDuplicate(conn,username))
         if sqlOperations.checkDuplicate(conn,username)!=None:
             flash('You already have a registered account on WCSCDB.')
             return redirect(url_for('index'))
@@ -244,8 +243,7 @@ def tips():
                     return render_template('tips.html',posts=posts)
             except Exception as err:
                 flash('Error: {}'.format(repr(err)))
-                posts = sqlOperations.getAllPosts(conn)
-                return redirect(url_for('tips',posts=posts))  
+                return redirect(url_for('tips'))  
     else:
         flash('You are not logged in. Please log in or register')
         return redirect(url_for('index'))
@@ -268,15 +266,11 @@ def write():
             try:
                 sqlOperations.addPost(conn,authorID,content,title,timeNow)
                 # lock.release()
-                posts = sqlOperations.getAllPosts(conn)
-                # currently, once the user submit a post, they will not be able to edit it
                 flash('Successfully submitted your post!')
-                return redirect(url_for('tips',posts=posts))
             except Exception as err:
                 # lock.release()
                 flash('Some kind of post submission error: {}'.format(repr(err)))
-                posts = sqlOperations.getAllPosts(conn)
-                return redirect(url_for('tips',posts=posts))
+            return redirect(url_for('tips'))
     else:
         flash('You are not logged in. Please log in or register')
         return redirect(url_for('index'))
@@ -292,8 +286,7 @@ def tip(postID):
                 return render_template("tip.html",result = postInfo)
             except Exception as error:
                 flash('Error: {}'.format(repr(error)))
-                posts = sqlOperations.getAllPosts(conn)
-                return redirect(url_for('tips',posts=posts))  
+                return redirect(url_for('tips'))  
         else: # POST
             form_data = request.form
             if form_data.get('submit')=="Delete":
@@ -303,8 +296,7 @@ def tip(postID):
                     flash('Your post was successfully deleted.')
                 except Exception as error:
                     flash('Error: {}'.format(repr(error)))
-                posts = sqlOperations.getAllPosts(conn)
-                return redirect(url_for('tips',posts=posts)) 
+                return redirect(url_for('tips')) 
             elif form_data.get('submit')=="Edit":
                 conn = dbi.connect()
                 postInfo = sqlOperations.postInfo(conn,postID)
