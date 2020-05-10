@@ -33,10 +33,7 @@
             {% for p in posts %}
             <div id='postTT'>
                 <a href="{{ url_for('tip', postID=p['postID']) }}" class='postTT'>{{p['title']}}</a>
-                </br><em>by {{p['name']}}, {{p['datetime']}}</em>
-                    <div>
-                        {{p['content']}}
-                    </div>
+                </br><em>by {{p['name']}}, posted at {{p['datetime']}}</em>
             </div>
             {% endfor %}
     {% endif %}

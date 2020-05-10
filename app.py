@@ -260,8 +260,8 @@ def write():
             userID = session['userID']
             form_data = request.form
             conn = dbi.connect()
-            title = form_data['postTitle']
-            content = form_data['postContent']
+            title = form_data.get('postTitle',"")
+            content = form_data.get('postContent',"")
             timeNow = datetime.now() 
             authorID = userID
             # lock.acquire()
@@ -305,10 +305,21 @@ def tip(postID):
                     flash('Error: {}'.format(repr(error)))
                 posts = sqlOperations.getAllPosts(conn)
                 return redirect(url_for('tips',posts=posts)) 
-
-
-            # else: # Edit
-
+            elif form_data.get('submit')=="Edit":
+                conn = dbi.connect()
+                postInfo = sqlOperations.postInfo(conn,postID)
+                return render_template('edit.html',result=postInfo)
+            else: # Submit from Edit
+                conn = dbi.connect()
+                try:
+                    title = form_data.get('postTitle',"")
+                    content = form_data.get('postContent',"")
+                    sqlOperations.updatePost(conn,postID,title,content)
+                    flash("Successfully edited your post.")
+                except Exception as error:
+                    flash('Error: {}'.format(repr(error)))
+                postInfo = sqlOperations.postInfo(conn,postID)
+                return render_template('tip.html',result=postInfo)
 
 
     else:

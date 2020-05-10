@@ -12,7 +12,6 @@ def profileInfo(conn,userID):
     return curs.fetchone()
 
 '''Returns post information with specified postID.'''
-# fix this
 def postInfo(conn,postID):
     curs = dbi.dict_cursor(conn)
     curs.execute('''
@@ -127,7 +126,6 @@ def searchProfileByInterest(conn,interest):
         )
     return curs.fetchall()
 
-#add post
 '''Adds post with input information.'''
 def addPost(conn,authorID,content,title,datetime):
     curs = dbi.dict_cursor(conn)
@@ -166,6 +164,15 @@ def searchPostbyKeyword(conn,keyword):
         INNER JOIN user ON user.userID=authorID WHERE post.content like %s or post.title like %s;
         ''',['%'+keyword+"%",'%'+keyword+"%"])
     return curs.fetchall()
+
+'''Edits post with specified postID and given information.'''
+def updatePost(conn,postID,title,content):
+    curs = dbi.dict_cursor(conn)
+    curs.execute('''
+        UPDATE post
+        SET title=%s, content=%s
+        WHERE postID=%s;''',[title,content,postID])
+    conn.commit()
 
 '''Deletes post with specified postID.'''
 def deletePost(conn,postID):
