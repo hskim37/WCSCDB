@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block head_stuff %}
+{% endblock %}
+{% block main_content %}
+<!-- the search bar for interview tips -->
+<form class="search" method="POST" action="">
+<fieldset>
+    <tr><td>
+    <label>Search by
+            <select required="" name="kind">
+                <option value="">choose one</option>
+                <option value="author">Author Name</option>
+                <option value="keyword">Keyword</option>
+
+            </select>
+    </label>
+    </td></tr>
+    <tr><td>
+            <label for="searchWord"> </label></td>
+            <td><input type="text" name="searchWord" id="searchWord">
+    </td></tr>
+      <tr><td>
+      <input type="submit" value="search">
+      </td></tr>
+      </fieldset>
+</form>
+<p></p>
+<!-- form to submit posts  -->
+<form method="POST" action="{{ url_for('write') }}" id='write'>
+<fieldset>
+    <table>
+        <tr>
+            <td><label for="postTitle">Title: </label></td>
+            <td><textarea id="postTitle" name="postTitle" rows="1" cols="50" minlength=1 maxlength=50></textarea></td>
+        </tr>
+        <tr>
+            <td><label for="postContent">Content: </label></td> 
+            <td><textarea id="postContent" name="postContent" rows="8" cols="50" minlength=1 maxlength=1000></textarea></td>
+        </tr>
+        <tr>
+            <td><input type="submit" name="submit" value="Post"></td>
+        </tr>
+    </table>
+</fieldset>
+</form>
+
+{% endblock %}

@@ -29,6 +29,12 @@ h1 {
     margin-right:auto; 
 }
 
+.writePost {
+    color: darkgreen;
+    font-weight: bold;
+    border: 1px solid darkgreen;
+}
+
 #content {
     background-color:lightyellow;
     font-size: 20px;

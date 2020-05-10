@@ -24,29 +24,11 @@
       </fieldset>
 </form>
 <p></p>
-<!-- form to submit posts  -->
-<form method="POST" action="" id='post'>
-<fieldset>
-    <legend>Write a Post</legend>
-    <table>
-        <tr>
-           <td> <label for="postTitle">Title:</label> </td>
-           <td> <textarea id="postTitle" name="postTitle" rows="1" cols="50" maxlength=50 form="post"></textarea></td>
-            </tr>
-
-            <tr>
-           <td><label for="article">Content:</label></td> 
-          <td><textarea id="article" name="article" rows="8" cols="50" maxlength=1000 form="post"></textarea> </td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="submit" form='post'></td>
-              </tr>
-    </table>
-</fieldset>
-</form>
+<a href="{{ url_for('write') }}" class="writePost"> Write a Post </a>
+<p></p>
 {% endblock %}
 {% block main_content %}
-{% if posts %}
+    {% if posts %}
             {% for p in posts %}
                 <div id='postTT'><span>{{p['title']}}</span>
                 </br><em>by {{p['name']}}, {{p['datetime']}}</em>
@@ -56,6 +38,5 @@
                 </div>
               
             {% endfor %}
-
-        {% endif %}
+    {% endif %}
 {% endblock %}

@@ -222,60 +222,65 @@ def network():
 '''URL for posts on tips.'''
 @app.route("/tips/",methods=["GET","POST"])
 def tips():
-    if request.method == 'GET':
-        try:
-            if 'userID' in session:   
-                conn = dbi.connect() 
+    if 'userID' in session:
+        if request.method=='GET':
+            try:
+                conn = dbi.connect()
                 posts = sqlOperations.getAllPosts(conn)
                 return render_template('tips.html',posts=posts) 
-            else:
-                flash('You are not logged in. Please log in or register')
+            except Exception as err:
+                flash('some kind of error '+str(err))
                 return redirect(url_for('index'))
-        except Exception as err:
-            flash('some kind of error '+str(err))
-            return redirect(url_for('index'))
-    elif request.method == 'POST':
-        if "userID" in session:
+        else: # POST
+            try:
+                form_data = request.form
+                conn = dbi.connect()
+                if form_data['kind'] =='author':
+                    authorName = form_data['searchWord']
+                    posts = sqlOperations.searchPostbyAuthor(conn,authorName)
+                    return render_template('tips.html',posts=posts)
+                else: # keyword
+                    keyword = form_data['searchWord']
+                    posts = sqlOperations.searchPostbyKeyword(conn,keyword) 
+                    return render_template('tips.html',posts=posts)
+            except Exception as err:
+                flash('Error: {}'.format(repr(err)))
+                posts = sqlOperations.getAllPosts(conn)
+                return redirect(url_for('tips',posts=posts))  
+    else:
+        flash('You are not logged in. Please log in or register')
+        return redirect(url_for('index'))
+
+'''URL for writing tip posts.'''
+@app.route("/write/",methods=["GET","POST"])
+def write():
+    if 'userID' in session:
+        if request.method == 'GET':
+            return render_template("write.html")
+        else: # POST
             userID = session['userID']
             form_data = request.form
             conn = dbi.connect()
-            if form_data.get('kind')==None: #submit a post
-                print("here",form_data)
-                title = form_data["postTitle"]
-                content =form_data['article']
-                timeNow = datetime.now() 
-                authorID = userID
-                lock.acquire()
-                try:
-                    sqlOperations.addPost(conn,authorID,content,title,timeNow)
-                    lock.release()
-                    posts = sqlOperations.getAllPosts(conn)
-                    # currently, once the user submit a post, they will not be able to edit it
-                    return redirect(url_for('tips',posts=posts))
-                    flash('Successfully submitted your post!')
-                except Exception as err:
-                    lock.release()
-                    flash('Some kind of post submission error: {}'.format(repr(err)))
-                    posts = sqlOperations.getAllPosts(conn)
-                    return redirect(url_for('tips',posts=posts))
-
-            else: #search for posts
-                try:
-                    if form_data['kind'] =='author':
-                        authorName= form_data['searchWord']
-                        posts = sqlOperations.searchPostbyAuthor(conn,authorName)
-                        return render_template('tips.html',posts=posts)
-                    elif form_data['kind'] =='keyword':
-                        keyword = form_data['searchWord']
-                        posts = sqlOperations.searchPostbyKeyword(conn,keyword) 
-                        return render_template('tips.html',posts=posts)
-                except Exception as err:
-                    flash('Post submission error: {}'.format(repr(err)))
-                    posts = sqlOperations.getAllPosts(conn)
-                    return redirect(url_for('tips',posts=posts))      
-        else:
-            flash('You are not logged in. Please log in or register')
-            return redirect(url_for('index'))
+            title = form_data['postTitle']
+            content = form_data['postContent']
+            timeNow = datetime.now() 
+            authorID = userID
+            # lock.acquire()
+            try:
+                sqlOperations.addPost(conn,authorID,content,title,timeNow)
+                # lock.release()
+                posts = sqlOperations.getAllPosts(conn)
+                # currently, once the user submit a post, they will not be able to edit it
+                flash('Successfully submitted your post!')
+                return redirect(url_for('tips',posts=posts))
+            except Exception as err:
+                # lock.release()
+                flash('Some kind of post submission error: {}'.format(repr(err)))
+                posts = sqlOperations.getAllPosts(conn)
+                return redirect(url_for('tips',posts=posts))
+    else:
+        flash('You are not logged in. Please log in or register')
+        return redirect(url_for('index'))
 
 '''URL for profiles on network, visible to other users.'''
 @app.route("/profile/<userID>")
@@ -283,7 +288,6 @@ def alumnusPage(userID):
     profileInfo = sqlOperations.profileInfo(conn,userID)    
     print("profileInfo is", profileInfo)
     return render_template("alumnus.html",result = profileInfo)
-
 
 if __name__ == '__main__':
     
