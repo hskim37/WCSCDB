@@ -113,27 +113,35 @@ def register():
         if password!=confirmPassword:
             flash('Passwords do not match. Try again.')
             return redirect(url_for('logged_in'))
-        name = request.form['name']
-        year = request.form['year']
-        email = request.form['email']
-        userID = request.form['userID']
-        hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        hashed_str = hashed.decode('utf-8')
-        conn = dbi.connect()
-        curs = dbi.cursor(conn)
-        lock.acquire()
-        try:
-            sqlOperations.registerUser(conn,userID,hashed,name,year,email)
-        except Exception as err:
-            lock.release()
-            flash('User already registered: {}'.format(repr(err)))
-            return redirect(url_for('index'))
-        lock.release()
+        register_hidden(request.form)
         flash('Successfully registered')
         return redirect(url_for('index'))
     except Exception as err:
         flash('form submission error '+str(err))
         return redirect(url_for('index'))
+
+def register_hidden(dataDict):
+    name = dataDict['name']
+    year = dataDict['year']
+    email = dataDict['email']
+    userID = dataDict['userID']
+    password = dataDict['password']
+    hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    hashed_str = hashed.decode('utf-8')
+    conn = dbi.connect()
+    curs = dbi.cursor(conn)
+    lock.acquire()
+    try:
+        sqlOperations.registerUser(conn,userID,hashed,name,year,email)
+    except Exception as err:
+        lock.release()
+        flash('User already registered: {}'.format(repr(err)))
+        return redirect(url_for('index'))
+    lock.release()
+
+
+
+
 
 '''URL for viewing and editing user's personal profile.'''
 @app.route("/profile/", methods=["GET","POST"])
