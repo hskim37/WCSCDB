@@ -1,81 +1,125 @@
 /* For flashed messages; make them stand out using red and italics */
+table,article{
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; 
+  }
+  #messages {
+      color: red;
+      font-style: italic;
+      font-size:20px;
+  }
+  
+  a {
+      color: orange;
+      font-size:25px;
+      text-decoration: none;
+  }
+  
+  h1 {
+      font-size: 200%;
+      color: teal;
+  }
+  
+  h2 {
+      color: cadetblue;
+  }
+  
+  .search {
+      text-align: center;
+      background-color: pink;
+      font-size:  18px;
+      /* border:2px solid coral; */
+  }
+  
+  .navibar {
+      width: 75%;
+      margin-left:auto; 
+      margin-right:auto; 
+  }
+  
+  .writePost {
+      color: darkgreen;
+      font-weight: bold;
+      border: 1px solid darkgreen;
+  }
+  
+  #content {
+      background-color:lightyellow;
+      font-size: 20px;
+      padding: 30px;
+      width: 1000px; 
+      margin: 0 auto;
+  }
+  
+  #title {
+      font-size: 50px;
+      text-align: center;
+      color: navy;
+      font-weight: bold;
+  }
+  
+  .network td,
+  .network th,
+  .network tr {
+      padding: 20px;
+  }
+  
+  html {
+      background-color:lightblue;
+  }
 
-#messages {
-    color: red;
-    font-style: italic;
-    font-size:20px;
-}
-
-a {
-    color: orange;
-    text-decoration: none;
-}
-
-h1 {
-    font-size: 200%;
-    color: teal;
-}
-
-h2 {
-    color: cadetblue;
-}
-
-.search {
-    text-align: center;
-    background-color: pink;
-    font-size:  18px;
-    /* border:2px solid coral; */
-}
-
-.navibar {
-    width: 75%;
-    margin-left:auto; 
-    margin-right:auto; 
-}
-
-.writePost {
-    color: darkgreen;
-    font-weight: bold;
-    border: 1px solid darkgreen;
-}
-
-#content {
-    background-color:lightyellow;
-    font-size: 20px;
-    padding: 30px;
-    width: 1000px; 
-    margin: 0 auto;
-}
-
-#title {
-    font-size: 50px;
-    text-align: center;
-    color: navy;
-    font-weight: bold;
-}
-
-.network td,
-.network th,
-.network tr {
-    padding: 20px;
-}
-
-html {
-    background-color:lightblue;
-}
-.alumnusProfile {
-    /* not working, will fix later */
-    background-color:#4CAF50; 
-}
-#postTT{
-    background-color:blanchedalmond; 
-    padding:10px;
-}
-
-.postTT {
-    text-align: center;
-    font-size: 25px;
-    color: cadetblue;
-    background-color:cornsilk;
-    font-weight: bold;
-}
+  
+  .postTT {
+      text-align: center;
+      font-size: 25px;
+      color:  #004d00;
+      text-shadow: 0 1px white;
+      font-weight: bold;
+  }
+  #profileBttn{
+          background-color:#008CBA; 
+          border: none;
+          color: white;
+          padding: 5px 10px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+  }
+  tr.border_bottom td {
+      border-bottom:1pt solid black;
+    }
+  
+    #alumnusProfile,#network,#tips {
+  
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    #alumnusProfile td, #alumnusProfile th,
+    #network td, #network th {
+      border: 1px solid #ddd;
+      font-size:18px;
+      padding: 8px;
+    }
+  #alumnusProfile tr:nth-child(even){background-color: azure;}
+    
+  #alumnusProfile tr:nth-child(odd){background-color:#ccfff2;}
+  
+  
+    
+  #network tr:nth-child(even){background-color: #e6ffe6;}
+    
+  #network tr:nth-child(odd){background-color:#aed4af;}
+  
+  #network tr:hover {background-color:grey;}
+  #tips tr:nth-child(even){background-color: #ffeecc;}
+   #tips tr:nth-child(odd){background-color:cornsilk
+;}
+#tips tr:hover {background-color:cornflowerblue;}
+  #network th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: darkcyan;
+      color: white;
+    }

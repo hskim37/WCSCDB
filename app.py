@@ -158,7 +158,8 @@ def profile():
                 visibleY = ""
                 visibleN = "checked"
             for key in profileInfo:
-                value = profileInfo.get(key, "")
+                if profileInfo[key]==None:
+                    profileInfo[key] = ""
             return render_template('profile.html',result=profileInfo,visible=visibleY,invisible=visibleN)
 
         else:

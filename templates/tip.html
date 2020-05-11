@@ -3,13 +3,14 @@
 <title>WCSCDB::Post::{{result['title']}}</title>
 {% endblock %}
 {% block main_content %} 
-
+<article>
 <h2>{{result['title']}}</h2>
 <p>Author: {{result['authorID']}}</p>
 <p>Posted: {{result['datetime']}}</p>
 <fieldset>
     {{result['content']}}
 </fieldset>
+</article>
 {% if session['userID']==result['authorID'] %}
 <form method="POST" action="{{ url_for('tip',postID=result['postID']) }}">
     <input type="submit" name="submit" value="Edit">

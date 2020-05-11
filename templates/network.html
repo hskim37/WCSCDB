@@ -32,23 +32,23 @@
 {% endblock %}
 
 {% block main_content %}
-    <table class="network">
+    <table id="network">
         <tr>
             <th>Name</th>
             <th>Year</th>
             <th>Areas of Interest</th>
-            <th>More</th>
+            <th>More!</th>
         </tr>
         {%if result%}
         {% for profile in result %}
         <tr>
             <td>{{profile['name']}}</td>
-            <td align="center">{{profile['classYear']}}</td>
-            <td>{{profile['interests']}}</td>
+            <td>{{profile['classYear']}}</td>
+            <td>{{profile['interests'][:50]+"..."}}</td>
             <td>
                 <a href="{{url_for('alumnusPage', userID = profile['userID'])}}">
-                        <button type="button">More Information</button></a>
-            </td>
+                        <button id="profileBttn" type="button">More</button></a>
+                </td>
             
             
         </tr>

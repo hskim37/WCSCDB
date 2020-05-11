@@ -35,11 +35,15 @@
 
 {% block main_content %}
     {% if posts %}
+    <table id="tips">
             {% for p in posts %}
-            <div id='postTT'>
+            <tr>
+            <td id='postTT'>
                 <a href="{{ url_for('tip', postID=p['postID']) }}" class='postTT'>{{p['title']}}</a>
                 </br><em>by {{p['name']}}, posted at {{p['datetime']}}</em>
-            </div>
+            </td>
+        </tr>
             {% endfor %}
+     </table>
     {% endif %}
 {% endblock %}
