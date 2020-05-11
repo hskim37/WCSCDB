@@ -9,21 +9,22 @@
 
 <form method="POST" action="{{ url_for('profile') }}" id="profile">
     <fieldset>
+    <legend>Profile Information</legend>
     <table>
       <tr>
-        <td><label for="userID">ID</label></td>
+        <td>ID</td>
         <td>{{result['userID']}}</td>
       </tr>
       <tr>
-        <td><label for="name">Name</label></td>
+        <td>Name</td>
         <td>{{result['name']}}</td>
       </tr>
       <tr>
-        <td><label for="year">Class Year</label></td>
+        <td>Class Year</td>
         <td>{{result['classYear']}}</td>
       </tr>
       <tr>
-        <td><label for="email">Email</label></td>
+        <td>Email</td>
         <td>{{result['email']}}</td>
       </tr>
       <tr>
@@ -39,7 +40,7 @@
         <td><textarea id="career" name="career" rows="7" cols="50" maxlength=300 form="profile">{{result['career']}}</textarea></td>
       </tr>
       <tr>
-        <td>Visibility</td>
+        <td><label for="visibility">Visibility</label></td>
         <td><input type="radio" id="visibility" name="visibility" {{visible}} value="Y"> Yes</td>
       </tr>
       <tr>
