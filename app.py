@@ -120,6 +120,8 @@ def register():
         flash('form submission error '+str(err))
         return redirect(url_for('index'))
 
+'''Registers new account into database based on 
+information passed on from POST form.'''
 def register_hidden(dataDict):
     name = dataDict['name']
     year = dataDict['year']
