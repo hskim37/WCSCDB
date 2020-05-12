@@ -80,7 +80,7 @@ def index():
             userID = request.form['userID']
             password = request.form['password'] # the user's input as is
             conn = dbi.connect()
-            userInfo = sqlOperations.login(conn,userID)
+            userInfo = sqlOperations.loginInfo(conn,userID)
             if userInfo is None:
                 # Same response as wrong password,
                 # so no information about what went wrong
@@ -130,18 +130,11 @@ def register_hidden(dataDict):
     hashed_str = hashed.decode('utf-8')
     conn = dbi.connect()
     curs = dbi.cursor(conn)
-    lock.acquire()
     try:
         sqlOperations.registerUser(conn,userID,hashed,name,year,email)
     except Exception as err:
-        lock.release()
         flash('User already registered: {}'.format(repr(err)))
         return redirect(url_for('index'))
-    lock.release()
-
-
-
-
 
 '''URL for viewing and editing user's personal profile.'''
 @app.route("/profile/", methods=["GET","POST"])
@@ -197,34 +190,34 @@ def log_out():
 '''URL for network page.'''
 @app.route("/network/", methods=["GET","POST"])
 def network():
-    if request.method =='GET':
-        try:
-            if 'userID' in session:
+    if 'userID' in session:
+        if request.method == 'GET':
+            try:
                 conn = dbi.connect()
                 profileNetwork = sqlOperations.profileNetwork(conn)
                 return render_template("network.html", result=profileNetwork) 
-            else:
-                flash('You are not logged in. Please log in or register')
+            except Exception as err:
+                flash('some kind of error '+str(err))
                 return redirect(url_for('index'))
-        except Exception as err:
-            flash('some kind of error '+str(err))
-            return redirect(url_for('index'))
-    else: 
-        try:
-            conn = dbi.connect()
-            form_data = request.form
-            searchType = form_data['kind']
-            searchWord = form_data['keyword']
-            if searchType =='name':
-                profileNetwork = sqlOperations.searchProfileByName(conn,searchWord) 
-            elif searchType == "year":
-                profileNetwork = sqlOperations.searchProfileByYear(conn,searchWord)
-            elif searchType == 'interest':
-                profileNetwork = sqlOperations.searchProfileByInterest(conn,searchWord)
-            return render_template("network.html", result=profileNetwork) 
-        except Exception as err:
-            flash('some kind of error '+str(err))
-            return redirect(url_for('network'))
+        else: # POST
+            try:
+                conn = dbi.connect()
+                form_data = request.form
+                searchType = form_data['kind']
+                searchWord = form_data['keyword']
+                if searchType =='name':
+                    profileNetwork = sqlOperations.searchProfileByName(conn,searchWord) 
+                elif searchType == "year":
+                    profileNetwork = sqlOperations.searchProfileByYear(conn,searchWord)
+                elif searchType == 'interest':
+                    profileNetwork = sqlOperations.searchProfileByInterest(conn,searchWord)
+                return render_template("network.html", result=profileNetwork) 
+            except Exception as err:
+                flash('some kind of error '+str(err))
+                return redirect(url_for('network'))
+    else:
+        flash('You are not logged in. Please log in or register')
+        return redirect(url_for('index'))
                     
 '''URL for viewing posts on tips.'''
 @app.route("/tips/",methods=["GET","POST"])
@@ -271,13 +264,10 @@ def write():
             content = form_data.get('postContent',"")
             timeNow = datetime.now() 
             authorID = userID
-            # lock.acquire()
             try:
                 sqlOperations.addPost(conn,authorID,content,title,timeNow)
-                # lock.release()
                 flash('Successfully submitted your post!')
             except Exception as err:
-                # lock.release()
                 flash('Some kind of post submission error: {}'.format(repr(err)))
             return redirect(url_for('tips'))
     else:

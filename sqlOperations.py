@@ -1,7 +1,7 @@
 import cs304dbi as dbi
 
-'''Returns profile information for user with specified userID.'''
 def profileInfo(conn,userID):
+    '''Returns profile information for user with specified userID.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         SELECT user.userID, user.name, user.classYear, 
@@ -11,8 +11,8 @@ def profileInfo(conn,userID):
         WHERE user.userID=%s;''', [userID])
     return curs.fetchone()
 
-'''Returns post information with specified postID.'''
 def postInfo(conn,postID):
+    '''Returns post information with specified postID.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         SELECT user.name,`datetime`,content,title,
@@ -21,8 +21,8 @@ def postInfo(conn,postID):
         WHERE postID=%s;''', [postID])
     return curs.fetchone()
 
-'''Updates profile with specified userID and input information.'''
 def updateProfile(conn,userID,visibility,interests,introduction,career):
+    '''Updates profile with specified userID and input information.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
     UPDATE profile
@@ -36,8 +36,8 @@ def updateProfile(conn,userID,visibility,interests,introduction,career):
     ''', [visibility,interests,introduction,career,userID])
     conn.commit()
 
-'''Registers new user account and calls registerProfile.'''
 def registerUser(conn,userID,hashed,name,year,email):
+    '''Registers new user account and calls registerProfile.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         INSERT INTO
@@ -47,8 +47,8 @@ def registerUser(conn,userID,hashed,name,year,email):
     conn.commit()
     registerProfile(conn,userID)
 
-'''Registers profile for new user.'''
 def registerProfile(conn,userID):
+    '''Registers profile for new user.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
     INSERT INTO `profile` 
@@ -56,9 +56,9 @@ def registerProfile(conn,userID):
     ''', [userID])
     conn.commit()
 
-'''Returns login information for account 
-with the specified userID.'''
-def login(conn,userID):
+def loginInfo(conn,userID):
+    '''Returns login information for account 
+    with the specified userID.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         SELECT userID,hashed 
@@ -66,9 +66,9 @@ def login(conn,userID):
         ''', [userID])
     return curs.fetchone()
 
-'''Checks if there is a user with the same userID 
-when registering new account.'''
 def checkDuplicate(conn,userID):
+    '''Checks if there is a user with the same userID 
+    when registering new account.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         SELECT userID
@@ -76,9 +76,9 @@ def checkDuplicate(conn,userID):
         ''', [userID])
     return curs.fetchone()
 
-'''Returns profile information of all users 
-who have set their profile to be visible.'''
 def profileNetwork(conn):
+    '''Returns profile information of all users 
+    who have set their profile to be visible.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         SELECT user.userID, user.name, user.classYear, 
@@ -89,9 +89,10 @@ def profileNetwork(conn):
         ''')
     return curs.fetchall()
 
-#three search functions for the network page search bar
-'''Returns all profiles with names like the query.'''
+# Three search functions for the network page search bar
+
 def searchProfileByName(conn,name):
+    '''Returns all profiles with names like the query.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         SELECT user.userID, user.name, user.classYear, 
@@ -102,8 +103,8 @@ def searchProfileByName(conn,name):
         )
     return curs.fetchall()
 
-'''Returns all profiles with class year equal to the query.'''
 def searchProfileByYear(conn,year):
+    '''Returns all profiles with class year equal to the query.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         SELECT user.userID, user.name, user.classYear, 
@@ -114,8 +115,8 @@ def searchProfileByYear(conn,year):
         )
     return curs.fetchall()
 
-'''Returns all profiles with interests like the query.'''
 def searchProfileByInterest(conn,interest):
+    '''Returns all profiles with interests like the query.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         SELECT user.userID, user.name, user.classYear, 
@@ -126,8 +127,8 @@ def searchProfileByInterest(conn,interest):
         )
     return curs.fetchall()
 
-'''Adds post with input information.'''
 def addPost(conn,authorID,content,title,datetime):
+    '''Adds post with input information.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         INSERT INTO post
@@ -136,8 +137,8 @@ def addPost(conn,authorID,content,title,datetime):
         ''', [authorID,datetime,title,content])
     conn.commit()
 
-'''Retrieves all posts.'''
 def getAllPosts(conn):
+    '''Retrieves all posts.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         SELECT user.name,`datetime`,content,title,
@@ -146,8 +147,8 @@ def getAllPosts(conn):
         ''')
     return curs.fetchall()
 
-'''Searches all posts with author names like the query.'''
 def searchPostbyAuthor(conn,authorName):
+    '''Searches all posts with author names like the query.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         SELECT user.name,`datetime`,content,title FROM post
@@ -155,9 +156,8 @@ def searchPostbyAuthor(conn,authorName):
         ''',['%'+authorName+"%"])
     return curs.fetchall()
 
-#not yet implemented
-'''Searches all posts with keywords like the query.'''
 def searchPostbyKeyword(conn,keyword):
+    '''Searches all posts with keywords like the query.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         SELECT user.name,`datetime`,content,title FROM post
@@ -165,8 +165,8 @@ def searchPostbyKeyword(conn,keyword):
         ''',['%'+keyword+"%",'%'+keyword+"%"])
     return curs.fetchall()
 
-'''Edits post with specified postID and given information.'''
 def updatePost(conn,postID,title,content):
+    '''Edits post with specified postID and given information.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         UPDATE post
@@ -174,8 +174,8 @@ def updatePost(conn,postID,title,content):
         WHERE postID=%s;''',[title,content,postID])
     conn.commit()
 
-'''Deletes post with specified postID.'''
 def deletePost(conn,postID):
+    '''Deletes post with specified postID.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
         DELETE from post WHERE postID=%s
