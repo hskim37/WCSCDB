@@ -151,7 +151,7 @@ def searchPostbyAuthor(conn,authorName):
     '''Searches all posts with author names like the query.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
-        SELECT user.name,`datetime`,content,title FROM post
+        SELECT user.name,`datetime`,content,title,postID FROM post
         INNER JOIN user ON user.userID=authorID WHERE user.name like %s;
         ''',['%'+authorName+"%"])
     return curs.fetchall()
@@ -160,7 +160,7 @@ def searchPostbyKeyword(conn,keyword):
     '''Searches all posts with keywords like the query.'''
     curs = dbi.dict_cursor(conn)
     curs.execute('''
-        SELECT user.name,`datetime`,content,title FROM post
+        SELECT user.name,`datetime`,content,title,postID FROM post
         INNER JOIN user ON user.userID=authorID WHERE post.content like %s or post.title like %s;
         ''',['%'+keyword+"%",'%'+keyword+"%"])
     return curs.fetchall()
